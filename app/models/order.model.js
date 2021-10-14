@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-  const Command = sequelize.define(
-    "command",
+  const Order = sequelize.define(
+    "order",
     {
       id: {
         type: Sequelize.STRING,
@@ -12,16 +12,28 @@ module.exports = (sequelize, Sequelize) => {
       id_puntos: {
         type: Sequelize.STRING,
       },
+      local: {
+        type: Sequelize.STRING,
+      },
       cedula: {
+        type: Sequelize.STRING,
+      },
+      tipo: {
         type: Sequelize.STRING,
       },
       mesa: {
         type: Sequelize.STRING,
       },
+      forma_pago: {
+        type: Sequelize.STRING,
+      },
+      estado_pago: {
+        type: Sequelize.STRING,
+      },
       observaciones: {
         type: Sequelize.STRING,
       },
-      estado: {
+      imagen_recibo: {
         type: Sequelize.STRING,
       },
       cod_articulos: {
@@ -30,15 +42,27 @@ module.exports = (sequelize, Sequelize) => {
       monto: {
         type: Sequelize.STRING,
       },
+      direccion: {
+        type: Sequelize.STRING,
+      },
+      telefono: {
+        type: Sequelize.STRING,
+      },
+      ciudad: {
+        type: Sequelize.STRING,
+      },
+      estado: {
+        type: Sequelize.STRING,
+      },
       fecha_creacion: {
         type: Sequelize.STRING,
       },
     },
     {
-      tableName: "tbl_comanda",
+      tableName: "tbl_pedido",
       timestamps: false,
     }
   );
 
-  return Command;
+  return Order;
 };

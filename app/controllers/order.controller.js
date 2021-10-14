@@ -1,8 +1,8 @@
 const db = require("../models");
-const Command = db.commands;
+const Order = db.orders;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Command
+// Create and Save a new Order
 exports.create = (req, res) => {
   // Validate request
   if (!req) {
@@ -13,27 +13,33 @@ exports.create = (req, res) => {
   }
 
   // Create a Tutorial
-  const command = {
+  const order = {
     id: req.body.id,
+    codigo: req.body.codigo,
     id_puntos: req.body.id_puntos,
+    local: req.body.local,
     cedula: req.body.cedula,
-    mesa: req.body.mesa,
+    forma_pago: req.body.forma_pago,
+    estado_pago: req.body.estado_pago,
     observaciones: req.body.observaciones,
-    estado: req.body.estado,
+    imagen_recibo: req.body.imagen_recibo,
     cod_articulos: req.body.cod_articulos,
     monto: req.body.monto,
+    direccion: req.body.direccion,
+    telefono: req.body.telefono,
+    ciudad: req.body.ciudad,
+    estado: req.body.estado,
     fecha_creacion: req.body.fecha_creacion,
   };
 
   // Save Tutorial in the database
-  Command.create(command)
+  Order.create(order)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Command.",
+        message: err.message || "Some error occurred while creating the Order.",
       });
     });
 };
@@ -43,7 +49,7 @@ exports.findAll = (req, res) => {
   const codigo = req.query.codigo;
   var condition = codigo ? { codigo: { [Op.like]: `%${codigo}%` } } : null;
 
-  Command.findAll({ where: condition })
+  Order.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
@@ -57,7 +63,7 @@ exports.findAll = (req, res) => {
 //Retrieves all Orders with status x
 exports.findByStatus = (req, res) => {
   const status = req.params.status;
-  Command.findAll({ where: { estado: status } })
+  Order.findAll({ where: { estado_pago: status } })
     .then((data) => {
       res.send(data);
     })
@@ -67,74 +73,74 @@ exports.findByStatus = (req, res) => {
       });
     });
 };
-// Find a single Command with an id
+// Find a single Order with an id
 exports.findOne = (req, res) => {
   const codigo = req.params.codigo;
 
-  Command.findOne({ where: { codigo: codigo } })
+  Order.findOne({ where: { codigo: codigo } })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Command with codigo=" + codigo,
+        message: "Error retrieving Order with codigo=" + codigo,
       });
     });
 };
 
-// Update a Command by the id in the request
+// Update a Order by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Command.update(req.body, {
+  Order.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Command was updated successfully.",
+          message: "Order was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Command with id=${id}. Maybe Command was not found or req.body is empty!`,
+          message: `Cannot update Order with id=${id}. Maybe Order was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Command with id=" + id,
+        message: "Error updating Order with id=" + id,
       });
     });
 };
 
-// Delete a Command with the specified id in the request
+// Delete a Order with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.body.id;
 
-  Command.destroy({
+  Order.destroy({
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Command was deleted successfully!",
+          message: "Order was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Command with id=${id}. Maybe Command was not found!`,
+          message: `Cannot delete Order with id=${id}. Maybe Order was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Command with id=" + id,
+        message: "Could not delete Order with id=" + id,
       });
     });
 };
 
 // Delete all Orders from the database.
 exports.deleteAll = (req, res) => {
-  Command.destroy({
+  Order.destroy({
     where: {},
     truncate: false,
   })
@@ -149,50 +155,9 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-exports.group = (req, res) => {
-  if (!req) {
-    res.status(400).send({
-      message: `Content  not be empty! ${req.body}`,
-    });
-    return;
-  }
-  const command = {
-    id: req.body.id,
-    id_puntos: req.body.id_puntos,
-    cedula: req.body.cedula,
-    mesa: req.body.mesa,
-    observaciones: req.body.observaciones,
-    estado: req.body.estado,
-    cod_articulos: req.body.cod_articulos,
-    monto: req.body.monto,
-    fecha_creacion: req.body.fecha_creacion,
-  };
-
-  Command.create(command)
-    .then(async () => {
-      let result = await Promise.all(
-        req.body.group.map((item) => {
-          Command.destroy({
-            where: { id: item.id },
-          });
-        })
-      );
-      if (result) {
-        res.send(data);
-      }
-      await res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while grouping the Commands.",
-      });
-    });
-};
-
 // Find all actived Orders
 exports.findAllActived = (req, res) => {
-  Command.findAll({ where: { estado: "1" } })
+  Order.findAll({ where: { estado: "1" } })
     .then((data) => {
       res.send(data);
     })

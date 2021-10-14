@@ -3,26 +3,29 @@ module.exports = (app) => {
 
   var router = require("express").Router();
 
-  // Create a new User
+  // Create a new Commands
   router.post("/create", command.create);
 
-  // Retrieve all Users
+  // Retrieve all Commands
   router.get("/read", command.findAll);
 
-  // Retrieve all published Users
-  // router.get("/actived", users.findAllActived);
+  // Retrieve all published Commands
+  // router.get("/actived", command.findAllActived);
 
-  // Retrieve a single User with id
-  router.get("/readOne/:id", command.findOne);
+  // Retrieve a single Commands with id
+  router.get("/readOne/:codigo", command.findOne);
 
-  // Update a User with id
+  //Retrieve a list of Commands
+  router.get("/readByStatus/:status", command.findByStatus);
+
+  // Update a Commands with id
   router.post("/update/:id", command.update);
 
-  // Delete a User with id
+  // Delete a Commands with id
   router.post("/delete", command.delete);
 
-  // Delete all commands
-  // router.delete("/", command.deleteAll);
+  // Group Commands with id
+  router.post("/group", command.group);
 
-  app.use("/api/command", router);
+  app.use("/api/comanda", router);
 };

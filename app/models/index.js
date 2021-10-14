@@ -12,6 +12,8 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.couriers = require("./courier.model.js")(sequelize, Sequelize);
+db.orders = require("./order.model.js")(sequelize, Sequelize);
+db.deliveries = require("./delivery.model.js")(sequelize, Sequelize);
 db.commands = require("./command.model.js")(sequelize, Sequelize);
 
 module.exports = db;

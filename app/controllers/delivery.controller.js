@@ -1,8 +1,8 @@
 const db = require("../models");
-const Courier = db.couriers;
+const Delivery = db.deliveries;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Courier
+// Create and Save a new Delivery
 exports.create = (req, res) => {
   // Validate request
   if (!req) {
@@ -13,28 +13,21 @@ exports.create = (req, res) => {
   }
 
   // Create a Tutorial
-  const courier = {
+  const delivery = {
     id: req.body.id,
-    cedula: req.body.cedula,
-    local: req.body.local,
-    nombres: req.body.nombres,
-    apellidos: req.body.apellidos,
-    correo: req.body.correo,
-    telefono: req.body.telefono,
-    estado: req.body.estado,
-    id_tienda: req.body.id_tienda,
-    fecha_creacion: req.body.fecha_creacion,
+    descripcion: req.body.descripcion,
+    total: req.body.total,
   };
 
   // Save Tutorial in the database
-  Courier.create(courier)
+  Delivery.create(delivery)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Courier.",
+          err.message || "Some error occurred while creating the Delivery.",
       });
     });
 };
@@ -42,9 +35,10 @@ exports.create = (req, res) => {
 // Retrieve all Couriers from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
+  console.log(name);
   var condition = name ? { nombre: { [Op.like]: `%${name}%` } } : null;
 
-  Courier.findAll({ where: condition })
+  Delivery.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
@@ -56,74 +50,74 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single Courier with an id
+// Find a single Delivery with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Courier.findOne({ where: { id: id } })
+  Delivery.findOne({ where: { id: id } })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Courier with id=" + id,
+        message: "Error retrieving Delivery with id=" + id,
       });
     });
 };
 
-// Update a Courier by the id in the request
+// Update a Delivery by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Courier.update(req.body, {
+  Delivery.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Courier was updated successfully.",
+          message: "Delivery was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Courier with id=${id}. Maybe Courier was not found or req.body is empty!`,
+          message: `Cannot update Delivery with id=${id}. Maybe Delivery was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Courier with id=" + id,
+        message: "Error updating Delivery with id=" + id,
       });
     });
 };
 
-// Delete a Courier with the specified id in the request
+// Delete a Delivery with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.body.id;
 
-  Courier.destroy({
+  Delivery.destroy({
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Courier was deleted successfully!",
+          message: "Delivery was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Courier with id=${id}. Maybe Courier was not found!`,
+          message: `Cannot delete Delivery with id=${id}. Maybe Delivery was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Courier with id=" + id,
+        message: "Could not delete Delivery with id=" + id,
       });
     });
 };
 
 // Delete all Couriers from the database.
 exports.deleteAll = (req, res) => {
-  Courier.destroy({
+  Delivery.destroy({
     where: {},
     truncate: false,
   })
@@ -140,7 +134,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all actived Couriers
 exports.findAllActived = (req, res) => {
-  Courier.findAll({ where: { estado: "1" } })
+  Delivery.findAll({ where: { estado: "1" } })
     .then((data) => {
       res.send(data);
     })
