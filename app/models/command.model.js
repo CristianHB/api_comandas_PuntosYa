@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const Command = sequelize.define(
-    "command",
+    "comanda",
     {
       id: {
         type: Sequelize.STRING,
@@ -25,7 +25,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
       },
       cod_articulos: {
-        type: Sequelize.JSON,
+        type: Sequelize.STRING,
       },
       monto: {
         type: Sequelize.STRING,

@@ -25,14 +25,16 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to comanda's PuntosYa API node application." });
 });
 
+require("./app/routes/command.routes")(app);
 require("./app/routes/courier.routes")(app);
 require("./app/routes/delivery.routes")(app);
 require("./app/routes/order.routes")(app);
-require("./app/routes/command.routes")(app);
+require("./app/routes/paymentGateway.routes")(app);
+require("./app/routes/paymentMethod.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8002;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
-  console.log(`Server ready on http://localhost:${PORT}.`);
+  // console.log(`Server ready on http://localhost:${PORT}.`);
 });

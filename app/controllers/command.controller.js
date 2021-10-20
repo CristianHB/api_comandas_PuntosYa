@@ -158,6 +158,7 @@ exports.group = (req, res) => {
   }
   const command = {
     id: req.body.id,
+    codigo: req.body.codigo,
     id_puntos: req.body.id_puntos,
     cedula: req.body.cedula,
     mesa: req.body.mesa,
@@ -168,19 +169,22 @@ exports.group = (req, res) => {
     fecha_creacion: req.body.fecha_creacion,
   };
 
+  let group = req.body.group;
+
   Command.create(command)
     .then(async () => {
       let result = await Promise.all(
-        req.body.group.map((item) => {
+        group.map((item) => {
           Command.destroy({
             where: { id: item.id },
           });
         })
       );
       if (result) {
-        res.send(data);
+        await res.send({
+          message: `commands grouped successfully res: ${command}`,
+        });
       }
-      await res.send(data);
     })
     .catch((err) => {
       res.status(500).send({

@@ -1,0 +1,153 @@
+const db = require("../models");
+const PaymentGateway = db.paymentGateways;
+const Op = db.Sequelize.Op;
+
+// Create and Save a new PaymentGateway
+exports.create = (req, res) => {
+  // Validate request
+  if (!req) {
+    res.status(400).send({
+      message: `Content  not be empty! ${req.body}`,
+    });
+    return;
+  }
+
+  // Create a Tutorial
+  const paymentGateway = {
+    id: req.body.id,
+    descripcion: req.body.descripcion,
+    total: req.body.total,
+  };
+
+  // Save Tutorial in the database
+  PaymentGateway.create(paymentGateway)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while creating the PaymentGateway.",
+      });
+    });
+};
+
+// Retrieve all PaymentGateways from the database.
+exports.findAll = (req, res) => {
+  const name = req.query.name;
+  console.log(name);
+  var condition = name ? { nombre: { [Op.like]: `%${name}%` } } : null;
+
+  PaymentGateway.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving PaymentGateways.",
+      });
+    });
+};
+
+// Find a single PaymentGateway with an id
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  PaymentGateway.findOne({ where: { id: id } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving PaymentGateway with id=" + id,
+      });
+    });
+};
+
+// Update a PaymentGateway by the id in the request
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  PaymentGateway.update(req.body, {
+    where: { id_cliente: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "PaymentGateway was updated successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot update PaymentGateway with id=${id}. Maybe PaymentGateway was not found or req.body is empty!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating PaymentGateway with id=" + id,
+      });
+    });
+};
+
+// Delete a PaymentGateway with the specified id in the request
+exports.delete = (req, res) => {
+  const id = req.body.id;
+
+  PaymentGateway.destroy({
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "PaymentGateway was deleted successfully!",
+        });
+      } else {
+        res.send({
+          message: `Cannot delete PaymentGateway with id=${id}. Maybe PaymentGateway was not found!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not delete PaymentGateway with id=" + id,
+      });
+    });
+};
+
+// Delete all PaymentGateways from the database.
+exports.deleteAll = (req, res) => {
+  PaymentGateway.destroy({
+    where: {},
+    truncate: false,
+  })
+    .then((nums) => {
+      res.send({
+        message: `${nums} PaymentGateways were deleted successfully!`,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while removing all PaymentGateways.",
+      });
+    });
+};
+
+// Find all actived PaymentGateways
+exports.findAllActived = (req, res) => {
+  PaymentGateway.findAll({ where: { estado: "1" } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving PaymentGateways.",
+      });
+    });
+};

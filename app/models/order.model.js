@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const Order = sequelize.define(
-    "order",
+    "pedido",
     {
       id: {
         type: Sequelize.STRING,
@@ -18,12 +18,6 @@ module.exports = (sequelize, Sequelize) => {
       cedula: {
         type: Sequelize.STRING,
       },
-      tipo: {
-        type: Sequelize.STRING,
-      },
-      mesa: {
-        type: Sequelize.STRING,
-      },
       forma_pago: {
         type: Sequelize.STRING,
       },
@@ -37,7 +31,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
       },
       cod_articulos: {
-        type: Sequelize.JSON,
+        type: Sequelize.STRING,
       },
       monto: {
         type: Sequelize.STRING,
