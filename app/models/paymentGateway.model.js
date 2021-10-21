@@ -2,6 +2,9 @@ module.exports = (sequelize, Sequelize) => {
   const PaymentGateway = sequelize.define(
     "pasarela_pago",
     {
+      nombre: {
+        type: Sequelize.STRING,
+      },
       id_cliente: {
         type: Sequelize.STRING,
         primaryKey: true,
@@ -10,6 +13,12 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
       },
       public_key: {
+        type: Sequelize.STRING,
+      },
+      dato1: {
+        type: Sequelize.STRING,
+      },
+      dato2: {
         type: Sequelize.STRING,
       },
     },

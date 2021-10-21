@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) => {
       nombre: {
         type: Sequelize.STRING,
       },
+      estado: {
+        type: Sequelize.BOOLEAN,
+      },
       descripcion: {
         type: Sequelize.STRING,
       },
