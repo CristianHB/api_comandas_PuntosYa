@@ -15,12 +15,6 @@ module.exports = (sequelize, Sequelize) => {
       public_key: {
         type: Sequelize.STRING,
       },
-      dato1: {
-        type: Sequelize.STRING,
-      },
-      dato2: {
-        type: Sequelize.STRING,
-      },
     },
     {
       tableName: "tbl_pasarela_pago",
