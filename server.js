@@ -31,6 +31,7 @@ require("./app/routes/delivery.routes")(app);
 require("./app/routes/order.routes")(app);
 require("./app/routes/paymentGateway.routes")(app);
 require("./app/routes/paymentMethod.routes")(app);
+require("./app/routes/tip.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8002;

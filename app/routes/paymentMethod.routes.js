@@ -3,25 +3,25 @@ module.exports = (app) => {
 
   var router = require("express").Router();
 
-  // Create a new PaymentGateway
+  // Create a new Payment Method
   //   router.post("/create", paymentMethod.create);
 
-  // Retrieve all PaymentGateway
+  // Retrieve all Payment Method
   router.get("/read", paymentMethod.findAll);
 
-  // Retrieve all published PaymentGateway
+  // Retrieve all published Payment Method
   // router.get("/actived", paymentMethod.findAllActived);
 
-  // Retrieve a single PaymentGateway with id
+  // Retrieve a single Payment Method with id
   //   router.get("/readOne/:id", paymentMethod.findOne);
 
-  // Update a PaymentGateway with id
+  // Update a Payment Method with id
   // router.post("/update/:id", paymentMethod.update);
 
-  // Delete a PaymentGateway with id
+  // Delete a Payment Method with id
   //   router.post("/delete", paymentMethod.delete);
 
-  // Delete all PaymentGateways
+  // Delete all Payment Methods
   // router.delete("/", paymentMethod.deleteAll);
 
   app.use("/api/metodos_pago", router);

@@ -1,8 +1,8 @@
 const db = require("../models");
-const PaymentMethod = db.paymentMethods;
+const Tip = db.tip;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new PaymentMethod
+// Create and Save a new Tip
 exports.create = (req, res) => {
   // Validate request
   if (!req) {
@@ -13,139 +13,132 @@ exports.create = (req, res) => {
   }
 
   // Create a Tutorial
-  const paymentMethod = {
+  const tip = {
     id: req.body.id,
-    descripcion: req.body.descripcion,
-    total: req.body.total,
+    valor: req.body.valor,
   };
 
   // Save Tutorial in the database
-  PaymentMethod.create(paymentMethod)
+  Tip.create(tip)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message ||
-          "Some error occurred while creating the PaymentMethod.",
+        message: err.message || "Some error occurred while creating the Tip.",
       });
     });
 };
 
-// Retrieve all PaymentMethods from the database.
+// Retrieve all Tips from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
   console.log(name);
   var condition = name ? { nombre: { [Op.like]: `%${name}%` } } : null;
 
-  PaymentMethod.findAll({ where: condition })
+  Tip.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving PaymentMethods.",
+        message: err.message || "Some error occurred while retrieving Tips.",
       });
     });
 };
 
-// Find a single PaymentMethod with an id
+// Find a single Tip with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  PaymentMethod.findOne({ where: { id: id } })
+  Tip.findOne({ where: { id: id } })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving PaymentMethod with id=" + id,
+        message: "Error retrieving Tip with id=" + id,
       });
     });
 };
 
-// Update a PaymentMethod by the id in the request
+// Update a Tip by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  PaymentMethod.update(req.body, {
+  Tip.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "PaymentMethod was updated successfully.",
+          message: "Tip was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update PaymentMethod with id=${id}. Maybe PaymentMethod was not found or req.body is empty!`,
+          message: `Cannot update Tip with id=${id}. Maybe Tip was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating PaymentMethod with id=" + id,
+        message: "Error updating Tip with id=" + id,
       });
     });
 };
 
-// Delete a PaymentMethod with the specified id in the request
+// Delete a Tip with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.body.id;
 
-  PaymentMethod.destroy({
+  Tip.destroy({
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "PaymentMethod was deleted successfully!",
+          message: "Tip was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete PaymentMethod with id=${id}. Maybe PaymentMethod was not found!`,
+          message: `Cannot delete Tip with id=${id}. Maybe Tip was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete PaymentMethod with id=" + id,
+        message: "Could not delete Tip with id=" + id,
       });
     });
 };
 
-// Delete all PaymentMethods from the database.
+// Delete all Tips from the database.
 exports.deleteAll = (req, res) => {
-  PaymentMethod.destroy({
+  Tip.destroy({
     where: {},
     truncate: false,
   })
     .then((nums) => {
       res.send({
-        message: `${nums} PaymentMethods were deleted successfully!`,
+        message: `${nums} Tips were deleted successfully!`,
       });
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message ||
-          "Some error occurred while removing all PaymentMethods.",
+        message: err.message || "Some error occurred while removing all Tips.",
       });
     });
 };
 
-// Find all actived PaymentMethods
+// Find all actived Tips
 exports.findAllActived = (req, res) => {
-  PaymentMethod.findAll({ where: { estado: "1" } })
+  Tip.findAll({ where: { estado: "1" } })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving PaymentMethods.",
+        message: err.message || "Some error occurred while retrieving Tips.",
       });
     });
 };

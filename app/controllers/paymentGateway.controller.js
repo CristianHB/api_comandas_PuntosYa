@@ -97,7 +97,7 @@ exports.delete = (req, res) => {
   const id = req.body.id;
 
   PaymentGateway.destroy({
-    where: { id: id },
+    where: { id_cliente: id },
   })
     .then((num) => {
       if (num == 1) {
