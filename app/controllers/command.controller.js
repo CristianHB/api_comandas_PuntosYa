@@ -22,7 +22,7 @@ exports.create = (req, res) => {
     estado: req.body.estado,
     cod_articulos: req.body.cod_articulos,
     monto: req.body.monto,
-    fecha_creacion: req.body.fecha_creacion,
+    fecha_creacion: new Date(req.body.fecha_creacion),
   };
 
   // Save Tutorial in the database
@@ -197,6 +197,62 @@ exports.group = (req, res) => {
 // Find all actived Orders
 exports.findAllActived = (req, res) => {
   Command.findAll({ where: { estado: "1" } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+};
+
+exports.totalCommandsLastYear = (req, res) => {
+  let date = new Date(req.body.date);
+  let fromDate = date.setMonth(date.getMonth() - 12);
+  var condition = date ? { fecha_creacion: { [Op.gt]: fromDate } } : null;
+  Command.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+};
+
+exports.totalCommandsLastMonth = (req, res) => {
+  let date = new Date(req.body.date);
+  if (date) {
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  }
+
+  var condition = date
+    ? { fecha_creacion: { [Op.between]: [firstDay, lastDay] } }
+    : null;
+  Command.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+};
+exports.totalCommandsToday = (req, res) => {
+  let date = new Date(req.body.date);
+  if (date) {
+    let firstDay = new Date(req.body.date).setHours(00, 00, 00);
+    let lastDay = new Date(req.body.date).setHours(23, 59, 59);
+  }
+
+  var condition = date
+    ? { fecha_creacion: { [Op.between]: [firstDay, lastDay] } }
+    : null;
+  Command.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })

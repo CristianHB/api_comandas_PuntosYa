@@ -4,6 +4,7 @@ module.exports = (sequelize, Sequelize) => {
     {
       id: {
         type: Sequelize.STRING,
+        primaryKey: true,
       },
       valor: {
         type: Sequelize.STRING,

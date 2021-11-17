@@ -16,7 +16,7 @@ module.exports = (app) => {
   //   router.get("/readOne/:id", paymentMethod.findOne);
 
   // Update a Payment Method with id
-  // router.post("/update/:id", paymentMethod.update);
+  router.post("/update/:id", paymentMethod.update);
 
   // Delete a Payment Method with id
   //   router.post("/delete", paymentMethod.delete);
