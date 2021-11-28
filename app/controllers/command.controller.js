@@ -268,15 +268,19 @@ exports.totalCommandsByTime = (req, res) => {
       });
     });
 
-  return Promise.all([promiseLastYear, promiseLastMonth, promiseToday]).then(
-    (values) => {
+  return Promise.all([promiseLastYear, promiseLastMonth, promiseToday])
+    .then((values) => {
       res.status(200).send({
         totalLastyear: values[0],
         totalLastMonth: values[1],
         totalToDay: values[2],
       });
-    }
-  );
+    })
+    .catch((e) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
 };
 
 //Find payed Commands by time
@@ -339,13 +343,17 @@ exports.totalPayedCommandsByTime = (req, res) => {
       });
     });
 
-  return Promise.all([promiseLastYear, promiseLastMonth, promiseToday]).then(
-    (values) => {
+  return Promise.all([promiseLastYear, promiseLastMonth, promiseToday])
+    .then((values) => {
       res.status(200).send({
         totalPayedLastyear: values[0],
         totalPayedLastMonth: values[1],
         totalPayedToDay: values[2],
       });
-    }
-  );
+    })
+    .catch((e) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
 };
