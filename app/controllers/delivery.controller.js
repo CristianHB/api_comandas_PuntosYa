@@ -12,14 +12,12 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Tutorial
   const delivery = {
     id: req.body.id,
     descripcion: req.body.descripcion,
     total: req.body.total,
   };
 
-  // Save Tutorial in the database
   Delivery.create(delivery)
     .then((data) => {
       res.send(data);

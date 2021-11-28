@@ -1,16 +1,16 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Delivery = sequelize.define(
     "domicilio",
     {
       id: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         primaryKey: true,
       },
       descripcion: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       total: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
     },
     {

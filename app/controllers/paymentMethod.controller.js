@@ -12,14 +12,12 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Tutorial
   const paymentMethod = {
     id: req.body.id,
     descripcion: req.body.descripcion,
     total: req.body.total,
   };
 
-  // Save Tutorial in the database
   PaymentMethod.create(paymentMethod)
     .then((data) => {
       res.send(data);

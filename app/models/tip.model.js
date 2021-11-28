@@ -1,13 +1,13 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Tip = sequelize.define(
     "propina",
     {
       id: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         primaryKey: true,
       },
       valor: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
     },
     {

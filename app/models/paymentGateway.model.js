@@ -1,19 +1,19 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const PaymentGateway = sequelize.define(
     "pasarela_pago",
     {
       nombre: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       id_cliente: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         primaryKey: true,
       },
       p_key: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       public_key: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
     },
     {

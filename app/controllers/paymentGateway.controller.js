@@ -12,14 +12,12 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Tutorial
   const paymentGateway = {
     id: req.body.id,
     descripcion: req.body.descripcion,
     total: req.body.total,
   };
 
-  // Save Tutorial in the database
   PaymentGateway.create(paymentGateway)
     .then((data) => {
       res.send(data);

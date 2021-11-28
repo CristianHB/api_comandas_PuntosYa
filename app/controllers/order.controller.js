@@ -11,13 +11,15 @@ exports.create = (req, res) => {
     });
     return;
   }
-
-  // Create a Tutorial
+  let date = new Date(req.body.fecha_creacion);
+  date.setHours(date.getHours() - 5);
+  // Create a Order
   const order = {
     id: req.body.id,
     codigo: req.body.codigo,
     id_puntos: req.body.id_puntos,
     local: req.body.local,
+    mensajero: req.body.mensajero,
     cedula: req.body.cedula,
     forma_pago: req.body.forma_pago,
     estado_pago: req.body.estado_pago,
@@ -29,10 +31,10 @@ exports.create = (req, res) => {
     telefono: req.body.telefono,
     ciudad: req.body.ciudad,
     estado: req.body.estado,
-    fecha_creacion: req.body.fecha_creacion,
+    fecha_creacion: date,
   };
 
-  // Save Tutorial in the database
+  // Save Order in the database
   Order.create(order)
     .then((data) => {
       res.send(data);
@@ -166,4 +168,136 @@ exports.findAllActived = (req, res) => {
         message: err.message || "Some error occurred while retrieving Orders.",
       });
     });
+};
+
+//find orders by time
+exports.totalOrdersByTime = (req, res) => {
+  let date2 = new Date(req.body.date);
+  let fromDate = date2.setMonth(date2.getMonth() - 12);
+  let date = new Date(req.body.date);
+  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  let firstDayToday = new Date(req.body.date).setHours(00, 00, 00);
+  let lastDayToday = new Date(req.body.date).setHours(23, 59, 59);
+  var conditionLastYear = date2
+    ? { fecha_creacion: { [Op.gt]: fromDate } }
+    : null;
+  var conditionLastMonth = date
+    ? {
+        fecha_creacion: {
+          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+        },
+      }
+    : null;
+  var conditionToday = date
+    ? { fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] } }
+    : null;
+
+  var promiseLastYear = Order.count({ where: conditionLastYear })
+    .then((data1) => {
+      return data1;
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+
+  var promiseLastMonth = Order.count({ where: conditionLastMonth })
+    .then((data2) => {
+      return data2;
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+
+  var promiseToday = Order.count({ where: conditionToday })
+    .then((data3) => {
+      return data3;
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+
+  return Promise.all([promiseLastYear, promiseLastMonth, promiseToday]).then(
+    (values) => {
+      res.status(200).send({
+        totalLastyear: values[0],
+        totalLastMonth: values[1],
+        totalLastDay: values[2],
+      });
+    }
+  );
+};
+
+//find payed orders by time
+exports.totalPayedOrdersByTime = (req, res) => {
+  let date2 = new Date(req.body.date);
+  let fromDate = date2.setMonth(date2.getMonth() - 12);
+  let date = new Date(req.body.date);
+  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  let firstDayToday = new Date(req.body.date).setHours(00, 00, 00);
+  let lastDayToday = new Date(req.body.date).setHours(23, 59, 59);
+  var conditionLastYear = date2
+    ? { fecha_creacion: { [Op.gt]: fromDate }, estado: "3" }
+    : null;
+  var conditionLastMonth = date
+    ? {
+        fecha_creacion: {
+          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+        },
+        estado: "3",
+      }
+    : null;
+  var conditionToday = date
+    ? {
+        fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] },
+        estado: "3",
+      }
+    : null;
+
+  var promiseLastYear = Order.count({ where: conditionLastYear })
+    .then((data1) => {
+      return data1;
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+
+  var promiseLastMonth = Order.count({ where: conditionLastMonth })
+    .then((data2) => {
+      return data2;
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+
+  var promiseToday = Order.count({ where: conditionToday })
+    .then((data3) => {
+      return data3;
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
+    });
+
+  return Promise.all([promiseLastYear, promiseLastMonth, promiseToday]).then(
+    (values) => {
+      res.status(200).send({
+        totalPayedLastyear: values[0],
+        totalPayedLastMonth: values[1],
+        totalPayedToDay: values[2],
+      });
+    }
+  );
 };

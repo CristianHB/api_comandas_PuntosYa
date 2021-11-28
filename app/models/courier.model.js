@@ -1,37 +1,37 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Courier = sequelize.define(
     "repartidor",
     {
       id: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         primaryKey: true,
       },
       cedula: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       local: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       nombres: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       apellidos: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       correo: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       telefono: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       estado: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       id_tienda: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       fecha_creacion: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
     },
     {

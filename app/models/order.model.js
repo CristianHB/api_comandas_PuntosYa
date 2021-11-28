@@ -1,55 +1,58 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define(
     "pedido",
     {
       id: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         primaryKey: true,
       },
       codigo: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       id_puntos: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       local: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
+      },
+      mensajero: {
+        type: DataTypes.STRING,
       },
       cedula: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       forma_pago: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       estado_pago: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       observaciones: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       imagen_recibo: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       cod_articulos: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       monto: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       direccion: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       telefono: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       ciudad: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       estado: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       fecha_creacion: {
-        type: Sequelize.STRING,
+        type: DataTypes.DATE,
       },
     },
     {

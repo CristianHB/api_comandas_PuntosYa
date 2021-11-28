@@ -27,12 +27,11 @@ module.exports = (app) => {
   // Group Commands with id
   router.post("/group", command.group);
 
-  // last year Commands
-  router.post("/readLastYear", command.totalCommandsLastYear);
-  // Last month Commands
-  router.post("/readLastMonth", command.totalCommandsLastMonth);
-  // Today Commands
-  router.post("/readToday", command.totalCommandsToday);
+  //Find Commands by time
+  router.post("/readCommandsByTime", command.totalCommandsByTime);
+
+  //Find Payed Commands by time
+  router.post("/readPayedCommandsByTime", command.totalPayedCommandsByTime);
 
   app.use("/api/comanda", router);
 };

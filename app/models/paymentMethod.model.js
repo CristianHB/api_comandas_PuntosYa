@@ -1,19 +1,19 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const PaymentMethod = sequelize.define(
     "metodo_pago",
     {
       id: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         primaryKey: true,
       },
       nombre: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       estado: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
       },
       descripcion: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
     },
     {

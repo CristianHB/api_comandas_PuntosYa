@@ -27,5 +27,11 @@ module.exports = (app) => {
   // Delete all orders
   // router.delete("/", order.deleteAll);
 
+  //read Orders by time
+  router.post("/readOrdersByTime", order.totalOrdersByTime);
+
+  //read Payed Orders by time
+  router.post("/readPayedOrdersByTime", order.totalPayedOrdersByTime);
+
   app.use("/api/pedido", router);
 };

@@ -1,37 +1,40 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Command = sequelize.define(
     "comanda",
     {
       id: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         primaryKey: true,
       },
       codigo: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
+      },
+      local: {
+        type: DataTypes.STRING,
       },
       id_puntos: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       cedula: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       mesa: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       observaciones: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       estado: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       cod_articulos: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       monto: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       fecha_creacion: {
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
     },
     {
