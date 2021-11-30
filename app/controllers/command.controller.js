@@ -14,10 +14,9 @@ exports.create = (req, res) => {
 
   let date = new Date(req.body.fecha_creacion);
   // date.setHours(date.getHours() - 5);
-
+  let ultimo = 1;
   const command = {
     id: req.body.id,
-    codigo: req.body.codigo,
     local: req.body.local,
     id_puntos: req.body.id_puntos,
     cedula: req.body.cedula,
@@ -30,15 +29,31 @@ exports.create = (req, res) => {
     fecha_creacion: date,
   };
 
-  Command.create(command)
-    .then((data) => {
-      res.send(data);
+  new Promise((resolve, reject) => {
+    lastInserted(req.body.local, resolve, reject);
+  })
+    .then((p) => {
+      if (p.length > 0) {
+        ultimo += parseInt(p[0].max);
+      }
+      command.codigo = ultimo;
+      // Save Command in the database
+      Command.create(command)
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while creating the Command.",
+          });
+        });
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Command.",
+        message: err || "Some error occurred while creating the Command.",
       });
+      console.log("error", err);
     });
 };
 
@@ -356,5 +371,20 @@ exports.totalPayedCommandsByTime = (req, res) => {
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving Orders.",
       });
+    });
+};
+
+//find last inserted
+const lastInserted = (tienda, resolve, reject) => {
+  Command.findAll({
+    where: { local: tienda },
+    attributes: [[Sequelize.fn("max", Sequelize.col("codigo")), "max"]],
+    raw: true,
+  })
+    .then((data) => {
+      resolve(data);
+    })
+    .catch((err) => {
+      reject(err);
     });
 };
