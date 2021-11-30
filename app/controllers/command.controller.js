@@ -1,4 +1,5 @@
 const db = require("../models");
+const Sequelize = require("sequelize");
 const Command = db.commands;
 const Op = db.Sequelize.Op;
 
@@ -33,7 +34,7 @@ exports.create = (req, res) => {
     lastInserted(req.body.local, resolve, reject);
   })
     .then((p) => {
-      if (p.length > 0) {
+      if (p[0].max) {
         ultimo += parseInt(p[0].max);
       }
       command.codigo = ultimo;
