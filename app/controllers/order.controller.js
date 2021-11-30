@@ -1,9 +1,10 @@
 const db = require("../models");
+const Sequelize = require("sequelize");
 const Order = db.orders;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Order
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate request
   if (!req) {
     res.status(400).send({
@@ -12,11 +13,11 @@ exports.create = (req, res) => {
     return;
   }
   let date = new Date(req.body.fecha_creacion);
-  date.setHours(date.getHours() - 5);
+  // date.setHours(date.getHours() - 5);
+  let ultimo = 1;
   // Create a Order
   const order = {
     id: req.body.id,
-    codigo: req.body.codigo,
     id_puntos: req.body.id_puntos,
     local: req.body.local,
     mensajero: req.body.mensajero,
@@ -34,15 +35,31 @@ exports.create = (req, res) => {
     fecha_creacion: date,
   };
 
-  // Save Order in the database
-  Order.create(order)
-    .then((data) => {
-      res.send(data);
+  new Promise((resolve, reject) => {
+    lastInserted(req.body.local, resolve, reject);
+  })
+    .then((p) => {
+      if (p.length > 0) {
+        ultimo += parseInt(p[0].max);
+      }
+      order.codigo = ultimo;
+      // Save Order in the database
+      Order.create(order)
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while creating the Order.",
+          });
+        });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the Order.",
+        message: err || "Some error occurred while creating the Order.",
       });
+      console.log("error", err);
     });
 };
 
@@ -307,5 +324,19 @@ exports.totalPayedOrdersByTime = (req, res) => {
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving Orders.",
       });
+    });
+};
+//find last inserted
+const lastInserted = (tienda, resolve, reject) => {
+  Order.findAll({
+    where: { local: tienda },
+    attributes: [[Sequelize.fn("max", Sequelize.col("codigo")), "max"]],
+    raw: true,
+  })
+    .then((data) => {
+      resolve(data);
+    })
+    .catch((err) => {
+      reject(err);
     });
 };

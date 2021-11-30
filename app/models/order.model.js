@@ -42,6 +42,9 @@ module.exports = (sequelize, DataTypes) => {
       direccion: {
         type: DataTypes.STRING,
       },
+      Id_Pedido_Enc: {
+        type: DataTypes.STRING,
+      },
       telefono: {
         type: DataTypes.STRING,
       },

@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
       fecha_creacion: {
         type: DataTypes.DATE,
       },
+      Id_Pedido_Enc: {
+        type: DataTypes.STRING,
+      },
     },
     {
       tableName: "tbl_comanda",
