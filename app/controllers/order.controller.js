@@ -26,6 +26,7 @@ exports.create = async (req, res) => {
     estado_pago: req.body.estado_pago,
     observaciones: req.body.observaciones,
     imagen_recibo: req.body.imagen_recibo,
+    Id_Pedido_Enc: req.body.Id_Pedido_Enc,
     cod_articulos: req.body.cod_articulos,
     monto: req.body.monto,
     direccion: req.body.direccion,
