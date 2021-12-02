@@ -3,8 +3,9 @@ module.exports = (sequelize, DataTypes) => {
     "domicilio",
     {
       id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
       descripcion: {
         type: DataTypes.STRING,

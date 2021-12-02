@@ -13,7 +13,6 @@ exports.create = (req, res) => {
   }
 
   const delivery = {
-    id: req.body.id,
     descripcion: req.body.descripcion,
     total: req.body.total,
   };

@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       public_key: {
         type: DataTypes.STRING,
       },
+      local: {
+        type: DataTypes.STRING,
+      },
     },
     {
       tableName: "tbl_pasarela_pago",
