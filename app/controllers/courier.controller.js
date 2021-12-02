@@ -15,7 +15,6 @@ exports.create = (req, res) => {
   // date.setHours(date.getHours() - 5);
 
   const courier = {
-    id: req.body.id,
     cedula: req.body.cedula,
     local: req.body.local,
     nombres: req.body.nombres,
