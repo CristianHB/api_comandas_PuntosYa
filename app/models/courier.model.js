@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "repartidor",
     {
       id: {
+        primaryKey: true,
         type: DataTypes.INTEGER,
         autoIncrement: true,
       },
