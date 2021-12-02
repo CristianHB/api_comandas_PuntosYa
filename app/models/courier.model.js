@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       fecha_creacion: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
       },
     },
     {
