@@ -3,8 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     "repartidor",
     {
       id: {
-        type: DataTypes.STRING,
-        primaryKey: true,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
       },
       cedula: {
         type: DataTypes.STRING,

@@ -13,9 +13,9 @@ exports.create = (req, res) => {
   }
 
   const paymentMethod = {
-    id: req.body.id,
+    nombre: req.body.nombre,
+    estado: req.body.estado,
     descripcion: req.body.descripcion,
-    total: req.body.total,
   };
 
   PaymentMethod.create(paymentMethod)

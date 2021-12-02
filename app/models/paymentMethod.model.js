@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     "metodo_pago",
     {
       id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
       nombre: {
