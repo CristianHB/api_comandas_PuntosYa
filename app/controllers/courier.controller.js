@@ -12,7 +12,7 @@ exports.create = (req, res) => {
     return;
   }
   let date = new Date(req.body.fecha_creacion);
-  date.setHours(date.getHours() - 5);
+  // date.setHours(date.getHours() - 5);
 
   const courier = {
     id: req.body.id,

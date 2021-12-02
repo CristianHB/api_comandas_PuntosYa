@@ -23,11 +23,11 @@ exports.create = (req, res) => {
     cedula: req.body.cedula,
     mesa: req.body.mesa,
     observaciones: req.body.observaciones,
-    Id_Pedido_Enc: req.body.Id_Pedido_Enc,
     estado: req.body.estado,
     cod_articulos: req.body.cod_articulos,
     monto: req.body.monto,
     fecha_creacion: date,
+    Id_Pedido_Enc: req.body.Id_Pedido_Enc,
   };
 
   new Promise((resolve, reject) => {
