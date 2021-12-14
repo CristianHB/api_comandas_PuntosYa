@@ -33,5 +33,8 @@ module.exports = (app) => {
   //Find Payed Commands by time
   router.post("/readPayedCommandsByTime", command.totalPayedCommandsByTime);
 
+  //Find Commands month
+  router.get("/readAllCommandsMonth", command.totalCommandsMonth);
+
   app.use("/api/comanda", router);
 };

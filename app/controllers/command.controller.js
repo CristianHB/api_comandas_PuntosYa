@@ -177,9 +177,11 @@ exports.group = (req, res) => {
     });
     return;
   }
+  let date = new Date(req.body.fecha_creacion);
+  let ultimo = 1;
   const command = {
     id: req.body.id,
-    codigo: req.body.codigo,
+    local: req.body.local,
     id_puntos: req.body.id_puntos,
     cedula: req.body.cedula,
     mesa: req.body.mesa,
@@ -187,31 +189,45 @@ exports.group = (req, res) => {
     estado: req.body.estado,
     cod_articulos: req.body.cod_articulos,
     monto: req.body.monto,
-    fecha_creacion: req.body.fecha_creacion,
+    fecha_creacion: date,
+    Id_Pedido_Enc: req.body.Id_Pedido_Enc,
   };
-
   let group = req.body.group;
-
-  Command.create(command)
-    .then(async () => {
-      let result = await Promise.all(
-        group.map((item) => {
-          Command.destroy({
-            where: { id: item.id },
-          });
-        })
-      );
-      if (result) {
-        await res.send({
-          message: `commands grouped successfully res: ${command}`,
-        });
+  new Promise((resolve, reject) => {
+    lastInserted(req.body.local, resolve, reject);
+  })
+    .then((p) => {
+      if (p[0].max) {
+        ultimo += parseInt(p[0].max);
       }
+      command.codigo = ultimo;
+      Command.create(command)
+        .then(async () => {
+          let result = await Promise.all(
+            group.map((item) => {
+              Command.destroy({
+                where: { id: item.id },
+              });
+            })
+          );
+          if (result) {
+            await res.send({
+              message: `commands grouped successfully res: ${command}`,
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while grouping the Commands.",
+          });
+        });
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while grouping the Commands.",
+        message: err || "Some error occurred while creating the Command.",
       });
+      console.log("error", err);
     });
 };
 
@@ -384,6 +400,61 @@ const lastInserted = (tienda, resolve, reject) => {
   })
     .then((data) => {
       resolve(data);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+};
+
+//agrupar y contar lo agrupado
+// exports.totalCommandsMonth = (req, res) => {
+//   let date = new Date(req.body.date);
+//   let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+//   let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+//   var conditionLastMonth = date
+//     ? {
+//         fecha_creacion: {
+//           [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+//         },
+//       }
+//     : null;
+
+//   Command.findAll({
+//     where: conditionLastMonth,
+//     attributes: [
+//       "estado",
+//       [Sequelize.fn("count", Sequelize.col("estado")), "total"],
+//     ],
+//     group: ["estado"],
+//     raw: true,
+//   })
+//     .then((data) => {
+//       res.send(data);
+//     })
+//     .catch((err) => {
+//       reject(err);
+//     });
+// };
+
+exports.totalCommandsMonth = (req, res) => {
+  let date = new Date(req.body.date);
+  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  var conditionLastMonth = date
+    ? {
+        fecha_creacion: {
+          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+        },
+      }
+    : null;
+
+  Command.findAll({
+    where: conditionLastMonth,
+  })
+    .then((data) => {
+      res.send(data);
     })
     .catch((err) => {
       reject(err);

@@ -341,3 +341,88 @@ const lastInserted = (tienda, resolve, reject) => {
       reject(err);
     });
 };
+
+//agrupar y contar lo agrupado
+// exports.totalCommandsMonth = (req, res) => {
+//   let date = new Date(req.body.date);
+//   let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+//   let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+//   var conditionLastMonth = date
+//     ? {
+//         fecha_creacion: {
+//           [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+//         },
+//       }
+//     : null;
+
+//   Order.findAll({
+//     where: conditionLastMonth,
+//     attributes: [
+//       "estado",
+//       [Sequelize.fn("count", Sequelize.col("estado")), "total"],
+//     ],
+//     group: ["estado"],
+//     raw: true,
+//   })
+//     .then((data) => {
+//       res.send(data);
+//     })
+//     .catch((err) => {
+//       reject(err);
+//     });
+// };
+
+exports.totalOrdersMonth = (req, res) => {
+  let date = new Date(req.body.date);
+  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  var conditionLastMonth = date
+    ? {
+        fecha_creacion: {
+          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+        },
+      }
+    : null;
+
+  Order.findAll({
+    where: conditionLastMonth,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+};
+
+exports.totalOrdersByPaymentMethod = (req, res) => {
+  let date = new Date(req.body.date);
+  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  var conditionLastMonth = date
+    ? {
+        fecha_creacion: {
+          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+        },
+      }
+    : null;
+
+  Order.findAll({
+    where: conditionLastMonth,
+    attributes: [
+      "forma_pago",
+      [Sequelize.fn("count", Sequelize.col("forma_pago")), "total"],
+    ],
+    group: ["forma_pago"],
+    raw: true,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+};
