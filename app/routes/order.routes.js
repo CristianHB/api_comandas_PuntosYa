@@ -34,10 +34,10 @@ module.exports = (app) => {
   router.post("/readPayedOrdersByTime", order.totalPayedOrdersByTime);
 
   //Find Orders month
-  router.get("/readAllOrdersMonth", order.totalOrdersMonth);
+  router.post("/readAllOrdersMonth", order.totalOrdersMonth);
 
   //Find Orders By Payment method
-  router.get("/readOrdersByPaymentMethod", order.totalOrdersByPaymentMethod);
+  router.post("/readOrdersByPaymentMethod", order.totalOrdersByPaymentMethod);
 
   app.use("/api/pedido", router);
 };
