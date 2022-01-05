@@ -13,9 +13,11 @@ exports.create = (req, res) => {
   }
 
   const paymentGateway = {
-    id: req.body.id,
-    descripcion: req.body.descripcion,
-    total: req.body.total,
+    nombre: req.body.nombre,
+    id_cliente: req.body.id_cliente,
+    p_key: req.body.p_key,
+    public_key: req.body.public_key,
+    local: req.body.local,
   };
 
   PaymentGateway.create(paymentGateway)
@@ -33,9 +35,8 @@ exports.create = (req, res) => {
 
 // Retrieve all PaymentGateways from the database.
 exports.findAll = (req, res) => {
-  const name = req.query.name;
-  console.log(name);
-  var condition = name ? { nombre: { [Op.like]: `%${name}%` } } : null;
+  const tienda = req.query.tienda;
+  var condition = tienda ? { local: tienda } : null;
 
   PaymentGateway.findAll({ where: condition })
     .then((data) => {

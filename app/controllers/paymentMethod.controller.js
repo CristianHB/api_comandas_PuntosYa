@@ -16,6 +16,7 @@ exports.create = (req, res) => {
     nombre: req.body.nombre,
     estado: req.body.estado,
     descripcion: req.body.descripcion,
+    local: req.body.local,
   };
 
   PaymentMethod.create(paymentMethod)
@@ -33,9 +34,8 @@ exports.create = (req, res) => {
 
 // Retrieve all PaymentMethods from the database.
 exports.findAll = (req, res) => {
-  const name = req.query.name;
-  console.log(name);
-  var condition = name ? { nombre: { [Op.like]: `%${name}%` } } : null;
+  const tienda = req.query.tienda;
+  var condition = tienda ? { local: tienda } : null;
 
   PaymentMethod.findAll({ where: condition })
     .then((data) => {
@@ -136,7 +136,8 @@ exports.deleteAll = (req, res) => {
 
 // Find all actived PaymentMethods
 exports.findAllActived = (req, res) => {
-  PaymentMethod.findAll({ where: { estado: "1" } })
+  const tienda = req.body.tienda;
+  PaymentMethod.findAll({ where: { estado: "1", local: tienda } })
     .then((data) => {
       res.send(data);
     })

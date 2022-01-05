@@ -66,8 +66,8 @@ exports.create = async (req, res) => {
 
 // Retrieve all Orders from the database.
 exports.findAll = (req, res) => {
-  const codigo = req.query.codigo;
-  var condition = codigo ? { codigo: { [Op.like]: `%${codigo}%` } } : null;
+  const tienda = req.body.tienda;
+  var condition = tienda ? { local: tienda } : null;
 
   Order.findAll({ where: condition })
     .then((data) => {
@@ -82,8 +82,9 @@ exports.findAll = (req, res) => {
 
 //Retrieves all Orders with status x
 exports.findByStatus = (req, res) => {
+  const tienda = req.body.tienda;
   const status = req.params.status;
-  Order.findAll({ where: { estado_pago: status } })
+  Order.findAll({ where: { estado_pago: status, local: tienda } })
     .then((data) => {
       res.send(data);
     })
@@ -190,6 +191,7 @@ exports.findAllActived = (req, res) => {
 
 //find orders by time
 exports.totalOrdersByTime = (req, res) => {
+  const tienda = req.body.tienda;
   let date2 = new Date(req.body.date);
   let fromDate = date2.setMonth(date2.getMonth() - 12);
   let date = new Date(req.body.date);
@@ -197,18 +199,25 @@ exports.totalOrdersByTime = (req, res) => {
   let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   let firstDayToday = new Date(req.body.date).setHours(00, 00, 00);
   let lastDayToday = new Date(req.body.date).setHours(23, 59, 59);
+
   var conditionLastYear = date2
-    ? { fecha_creacion: { [Op.gt]: fromDate } }
+    ? { fecha_creacion: { [Op.gt]: fromDate }, local: tienda }
     : null;
+
   var conditionLastMonth = date
     ? {
         fecha_creacion: {
           [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
         },
+        local: tienda,
       }
     : null;
+
   var conditionToday = date
-    ? { fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] } }
+    ? {
+        fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] },
+        local: tienda,
+      }
     : null;
 
   var promiseLastYear = Order.count({ where: conditionLastYear })
@@ -258,6 +267,7 @@ exports.totalOrdersByTime = (req, res) => {
 
 //find payed orders by time
 exports.totalPayedOrdersByTime = (req, res) => {
+  const tienda = req.body.tienda;
   let date2 = new Date(req.body.date);
   let fromDate = date2.setMonth(date2.getMonth() - 12);
   let date = new Date(req.body.date);
@@ -266,7 +276,7 @@ exports.totalPayedOrdersByTime = (req, res) => {
   let firstDayToday = new Date(req.body.date).setHours(00, 00, 00);
   let lastDayToday = new Date(req.body.date).setHours(23, 59, 59);
   var conditionLastYear = date2
-    ? { fecha_creacion: { [Op.gt]: fromDate }, estado: "3" }
+    ? { fecha_creacion: { [Op.gt]: fromDate }, estado: "3", local: tienda }
     : null;
   var conditionLastMonth = date
     ? {
@@ -274,12 +284,14 @@ exports.totalPayedOrdersByTime = (req, res) => {
           [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
         },
         estado: "3",
+        local: tienda,
       }
     : null;
   var conditionToday = date
     ? {
         fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] },
         estado: "3",
+        local: tienda,
       }
     : null;
 
@@ -374,6 +386,7 @@ const lastInserted = (tienda, resolve, reject) => {
 // };
 
 exports.totalOrdersMonth = (req, res) => {
+  const tienda = req.body.tienda;
   let date = new Date(req.body.date);
   let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -383,6 +396,7 @@ exports.totalOrdersMonth = (req, res) => {
         fecha_creacion: {
           [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
         },
+        local: tienda,
       }
     : null;
 
@@ -393,11 +407,14 @@ exports.totalOrdersMonth = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      reject(err);
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
     });
 };
 
 exports.totalOrdersByPaymentMethod = (req, res) => {
+  const tienda = req.body.tienda;
   let date = new Date(req.body.date);
   let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -407,6 +424,7 @@ exports.totalOrdersByPaymentMethod = (req, res) => {
         fecha_creacion: {
           [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
         },
+        local: tienda,
       }
     : null;
 
@@ -423,6 +441,8 @@ exports.totalOrdersByPaymentMethod = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      reject(err);
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Orders.",
+      });
     });
 };

@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       total: {
         type: DataTypes.STRING,
       },
+      local: {
+        type: DataTypes.STRING,
+      },
     },
     {
       tableName: "tbl_domicilio",

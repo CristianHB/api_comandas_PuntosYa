@@ -60,8 +60,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Commands from the database.
 exports.findAll = (req, res) => {
-  const codigo = req.query.codigo;
-  var condition = codigo ? { codigo: { [Op.like]: `%${codigo}%` } } : null;
+  const tienda = req.query.tienda;
+  var condition = tienda ? { local: tienda } : null;
 
   Command.findAll({ where: condition })
     .then((data) => {
@@ -78,13 +78,14 @@ exports.findAll = (req, res) => {
 //Retrieves all Commands with status x
 exports.findByStatus = (req, res) => {
   const status = req.params.status;
-  Command.findAll({ where: { estado: status } })
+  const tienda = req.query.tienda;
+  Command.findAll({ where: { estado: status, local: tienda } })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Commands with status=" + status,
+        message: `Error retrieving Commands of the store ${tienda} with status = ${status}`,
       });
     });
 };
@@ -227,7 +228,6 @@ exports.group = (req, res) => {
       res.status(500).send({
         message: err || "Some error occurred while creating the Command.",
       });
-      console.log("error", err);
     });
 };
 
@@ -247,6 +247,7 @@ exports.findAllActived = (req, res) => {
 
 //find Commands by time
 exports.totalCommandsByTime = (req, res) => {
+  const tienda = req.body.tienda;
   let date2 = new Date(req.body.date);
   let fromDate = date2.setMonth(date2.getMonth() - 12);
   let date = new Date(req.body.date);
@@ -254,18 +255,25 @@ exports.totalCommandsByTime = (req, res) => {
   let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   let firstDayToday = new Date(req.body.date).setHours(00, 00, 00);
   let lastDayToday = new Date(req.body.date).setHours(23, 59, 59);
+
   var conditionLastYear = date2
-    ? { fecha_creacion: { [Op.gt]: fromDate } }
+    ? { fecha_creacion: { [Op.gt]: fromDate }, local: tienda }
     : null;
+
   var conditionLastMonth = date
     ? {
         fecha_creacion: {
           [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
         },
+        local: tienda,
       }
     : null;
+
   var conditionToday = date
-    ? { fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] } }
+    ? {
+        fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] },
+        local: tienda,
+      }
     : null;
 
   var promiseLastYear = Command.count({ where: conditionLastYear })
@@ -318,6 +326,7 @@ exports.totalCommandsByTime = (req, res) => {
 
 //Find payed Commands by time
 exports.totalPayedCommandsByTime = (req, res) => {
+  const tienda = req.body.tienda;
   let date2 = new Date(req.body.date);
   let fromDate = date2.setMonth(date2.getMonth() - 12);
   let date = new Date(req.body.date);
@@ -325,21 +334,26 @@ exports.totalPayedCommandsByTime = (req, res) => {
   let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   let firstDayToday = new Date(req.body.date).setHours(00, 00, 00);
   let lastDayToday = new Date(req.body.date).setHours(23, 59, 59);
+
   var conditionLastYear = date2
-    ? { fecha_creacion: { [Op.gt]: fromDate }, estado: "3" }
+    ? { fecha_creacion: { [Op.gt]: fromDate }, estado: "3", local: tienda }
     : null;
+
   var conditionLastMonth = date
     ? {
         fecha_creacion: {
           [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
         },
         estado: "3",
+        local: tienda,
       }
     : null;
+
   var conditionToday = date
     ? {
         fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] },
         estado: "3",
+        local: tienda,
       }
     : null;
 
@@ -433,7 +447,10 @@ const lastInserted = (tienda, resolve, reject) => {
 //       res.send(data);
 //     })
 //     .catch((err) => {
-//       reject(err);
+//        res.status(500).send({
+//          message:
+//            err.message || "Some error occurred while retrieving Commands.",
+//        });
 //     });
 // };
 
@@ -457,6 +474,9 @@ exports.totalCommandsMonth = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      reject(err);
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Commands.",
+      });
     });
 };

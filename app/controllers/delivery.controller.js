@@ -15,6 +15,7 @@ exports.create = (req, res) => {
   const delivery = {
     descripcion: req.body.descripcion,
     total: req.body.total,
+    local: req.body.local,
   };
 
   Delivery.create(delivery)
@@ -31,9 +32,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Couriers from the database.
 exports.findAll = (req, res) => {
-  const name = req.query.name;
-  console.log(name);
-  var condition = name ? { nombre: { [Op.like]: `%${name}%` } } : null;
+  const tienda = req.query.tienda;
+  var condition = tienda ? { local: tienda } : null;
 
   Delivery.findAll({ where: condition })
     .then((data) => {

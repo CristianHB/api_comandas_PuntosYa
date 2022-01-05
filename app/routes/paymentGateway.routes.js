@@ -4,7 +4,7 @@ module.exports = (app) => {
   var router = require("express").Router();
 
   // Create a new PaymentGateway
-  //   router.post("/create", paymentGateway.create);
+  router.post("/create", paymentGateway.create);
 
   // Retrieve all PaymentGateway
   router.get("/read", paymentGateway.findAll);
@@ -19,7 +19,7 @@ module.exports = (app) => {
   router.post("/update/:id", paymentGateway.update);
 
   // Delete a PaymentGateway with id
-  //   router.post("/delete", paymentGateway.delete);
+  router.post("/delete", paymentGateway.delete);
 
   // Delete all PaymentGateways
   // router.delete("/", paymentGateway.deleteAll);

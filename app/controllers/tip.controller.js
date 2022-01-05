@@ -12,13 +12,14 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Tutorial
+  // Create a Tip
   const tip = {
     id: req.body.id,
     valor: req.body.valor,
+    local: req.body.local,
   };
 
-  // Save Tutorial in the database
+  // Save Tip in the database
   Tip.create(tip)
     .then((data) => {
       res.send(data);
@@ -32,9 +33,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Tips from the database.
 exports.findAll = (req, res) => {
-  const name = req.query.name;
-  console.log(name);
-  var condition = name ? { nombre: { [Op.like]: `%${name}%` } } : null;
+  const tienda = req.body.tienda;
+  var condition = tienda ? { local: tienda } : null;
 
   Tip.findAll({ where: condition })
     .then((data) => {

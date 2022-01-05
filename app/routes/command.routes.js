@@ -7,7 +7,7 @@ module.exports = (app) => {
   router.post("/create", command.create);
 
   // Retrieve all Commands
-  router.get("/read", command.findAll);
+  router.post("/read", command.findAll);
 
   // Retrieve all published Commands
   // router.get("/actived", command.findAllActived);

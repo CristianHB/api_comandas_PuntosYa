@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       valor: {
         type: DataTypes.STRING,
       },
+      local: {
+        type: DataTypes.STRING,
+      },
     },
     {
       tableName: "tbl_propina",

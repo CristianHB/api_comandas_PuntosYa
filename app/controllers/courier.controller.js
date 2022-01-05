@@ -40,8 +40,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Couriers from the database.
 exports.findAll = (req, res) => {
-  const name = req.query.name;
-  var condition = name ? { nombre: { [Op.like]: `%${name}%` } } : null;
+  const tienda = req.query.tienda;
+  var condition = tienda ? { local: tienda } : null;
 
   Courier.findAll({ where: condition })
     .then((data) => {
