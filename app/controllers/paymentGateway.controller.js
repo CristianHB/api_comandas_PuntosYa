@@ -35,7 +35,7 @@ exports.create = (req, res) => {
 
 // Retrieve all PaymentGateways from the database.
 exports.findAll = (req, res) => {
-  const tienda = req.query.tienda;
+  const tienda = req.body.tienda;
   var condition = tienda ? { local: tienda } : null;
 
   PaymentGateway.findAll({ where: condition })

@@ -7,7 +7,7 @@ module.exports = (app) => {
   router.post("/create", courier.create);
 
   // Retrieve all Courier
-  router.get("/read", courier.findAll);
+  router.post("/read", courier.findAll);
 
   // Retrieve all published Courier
   // router.get("/actived", courier.findAllActived);

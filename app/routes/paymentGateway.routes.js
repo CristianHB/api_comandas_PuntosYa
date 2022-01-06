@@ -7,7 +7,7 @@ module.exports = (app) => {
   router.post("/create", paymentGateway.create);
 
   // Retrieve all PaymentGateway
-  router.get("/read", paymentGateway.findAll);
+  router.post("/read", paymentGateway.findAll);
 
   // Retrieve all published PaymentGateway
   // router.get("/actived", paymentGateway.findAllActived);

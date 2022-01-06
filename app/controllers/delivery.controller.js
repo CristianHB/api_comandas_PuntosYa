@@ -33,7 +33,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Couriers from the database.
 exports.findAll = (req, res) => {
-  const tienda = req.query.tienda;
+  const tienda = req.body.tienda;
   var condition = tienda ? { local: tienda } : null;
 
   Delivery.findAll({ where: condition })

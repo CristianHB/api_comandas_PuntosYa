@@ -34,7 +34,7 @@ exports.create = (req, res) => {
 
 // Retrieve all PaymentMethods from the database.
 exports.findAll = (req, res) => {
-  const tienda = req.query.tienda;
+  const tienda = req.body.tienda;
   var condition = tienda ? { local: tienda } : null;
 
   PaymentMethod.findAll({ where: condition })
