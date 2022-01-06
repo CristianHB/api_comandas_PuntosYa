@@ -7,7 +7,7 @@ module.exports = (app) => {
   router.post("/create", Tip.create);
 
   // Retrieve all Tip
-  router.get("/read", Tip.findAll);
+  router.post("/read", Tip.findAll);
 
   // Retrieve all published Tip
   // router.get("/actived", Tip.findAllActived);
