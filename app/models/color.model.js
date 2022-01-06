@@ -1,30 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  const Delivery = sequelize.define(
-    "domicilio",
+  const Color = sequelize.define(
+    "colores",
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      descripcion: {
-        type: DataTypes.STRING,
-      },
-      total: {
+      color: {
         type: DataTypes.STRING,
       },
       local: {
         type: DataTypes.STRING,
       },
-      estado: {
-        type: DataTypes.INTEGER,
-      },
     },
     {
-      tableName: "tbl_domicilio",
+      tableName: "tbl_colores",
       timestamps: false,
     }
   );
 
-  return Delivery;
+  return Color;
 };

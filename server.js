@@ -25,6 +25,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to comanda's PuntosYa API node application." });
 });
 
+require("./app/routes/color.routes")(app);
 require("./app/routes/command.routes")(app);
 require("./app/routes/courier.routes")(app);
 require("./app/routes/delivery.routes")(app);

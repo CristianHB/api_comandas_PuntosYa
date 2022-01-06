@@ -16,6 +16,7 @@ exports.create = (req, res) => {
     descripcion: req.body.descripcion,
     total: req.body.total,
     local: req.body.local,
+    estado: 1,
   };
 
   Delivery.create(delivery)

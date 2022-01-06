@@ -60,7 +60,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Commands from the database.
 exports.findAll = (req, res) => {
-  const tienda = req.query.tienda;
+  const tienda = req.body.tienda;
+  console.log(tienda);
   var condition = tienda ? { local: tienda } : null;
 
   Command.findAll({ where: condition })
@@ -78,7 +79,7 @@ exports.findAll = (req, res) => {
 //Retrieves all Commands with status x
 exports.findByStatus = (req, res) => {
   const status = req.params.status;
-  const tienda = req.query.tienda;
+  const tienda = req.body.tienda;
   Command.findAll({ where: { estado: status, local: tienda } })
     .then((data) => {
       res.send(data);
