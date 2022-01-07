@@ -68,7 +68,6 @@ exports.update = (req, res) => {
 
   Color.findOne({ where: { local: tienda } }).then((data) => {
     if (data) {
-      console.log(data);
       Color.update(req.body, {
         where: { local: tienda },
       })
@@ -91,7 +90,8 @@ exports.update = (req, res) => {
     } else {
       // Create a Color
       const color = {
-        color: req.body.color,
+        colorPrimario: req.body.colorPrimario,
+        colorSecundario: req.body.colorSecundario,
         local: req.params.tienda,
       };
 

@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      color: {
+      colorPrimario: {
+        type: DataTypes.STRING,
+      },
+      colorSecundario: {
         type: DataTypes.STRING,
       },
       local: {
