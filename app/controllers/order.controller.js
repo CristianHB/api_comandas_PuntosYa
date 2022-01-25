@@ -17,7 +17,6 @@ exports.create = async (req, res) => {
   let ultimo = 1;
   // Create a Order
   const order = {
-    id: req.body.id,
     id_puntos: req.body.id_puntos,
     local: req.body.local,
     mensajero: req.body.mensajero,
@@ -192,13 +191,21 @@ exports.findAllActived = (req, res) => {
 //find orders by time
 exports.totalOrdersByTime = (req, res) => {
   const tienda = req.body.tienda;
-  let date2 = new Date(req.body.date);
-  let fromDate = date2.setMonth(date2.getMonth() - 12);
-  let date = new Date(req.body.date);
-  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  let firstDayToday = new Date(req.body.date).setHours(00, 00, 00);
-  let lastDayToday = new Date(req.body.date).setHours(23, 59, 59);
+  let date2 = new Date(req.body.date).toLocaleString("en-US");
+  let fromDate = new Date(date2).setMonth(new Date(date2).getMonth() - 12);
+  let date = new Date(req.body.date).toLocaleString("en-US");
+  let firstDayMonth = new Date(
+    new Date(date).getFullYear(),
+    new Date(date).getMonth(),
+    1
+  );
+  let lastDayMonth = new Date(
+    new Date(date).getFullYear(),
+    new Date(date).getMonth() + 1,
+    0
+  ).setHours(23, 59, 59);
+  let firstDayToday = new Date(date).setHours(00, 00, 00);
+  let lastDayToday = new Date(date).setHours(23, 59, 59);
 
   var conditionLastYear = date2
     ? { fecha_creacion: { [Op.gt]: fromDate }, local: tienda }
@@ -207,7 +214,15 @@ exports.totalOrdersByTime = (req, res) => {
   var conditionLastMonth = date
     ? {
         fecha_creacion: {
-          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+          [Op.between]: [
+            new Date(firstDayMonth).setMinutes(
+              new Date(date).getTimezoneOffset()
+            ),
+            new Date(lastDayMonth).setMinutes(
+              new Date(lastDayMonth).getMinutes() +
+                new Date(date).getTimezoneOffset()
+            ),
+          ],
         },
         local: tienda,
       }
@@ -215,7 +230,18 @@ exports.totalOrdersByTime = (req, res) => {
 
   var conditionToday = date
     ? {
-        fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] },
+        fecha_creacion: {
+          [Op.between]: [
+            new Date(firstDayToday).setMinutes(
+              new Date(firstDayToday).getMinutes() +
+                new Date(date).getTimezoneOffset()
+            ),
+            new Date(lastDayToday).setMinutes(
+              new Date(lastDayToday).getMinutes() +
+                new Date(date).getTimezoneOffset()
+            ),
+          ],
+        },
         local: tienda,
       }
     : null;
@@ -268,28 +294,58 @@ exports.totalOrdersByTime = (req, res) => {
 //find payed orders by time
 exports.totalPayedOrdersByTime = (req, res) => {
   const tienda = req.body.tienda;
-  let date2 = new Date(req.body.date);
-  let fromDate = date2.setMonth(date2.getMonth() - 12);
-  let date = new Date(req.body.date);
-  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  let firstDayToday = new Date(req.body.date).setHours(00, 00, 00);
-  let lastDayToday = new Date(req.body.date).setHours(23, 59, 59);
+  let date2 = new Date(req.body.date).toLocaleString("en-US");
+  let fromDate = new Date(date2).setMonth(new Date(date2).getMonth() - 12);
+  let date = new Date(req.body.date).toLocaleString("en-US");
+  let firstDayMonth = new Date(
+    new Date(date).getFullYear(),
+    new Date(date).getMonth(),
+    1
+  );
+  let lastDayMonth = new Date(
+    new Date(date).getFullYear(),
+    new Date(date).getMonth() + 1,
+    0
+  ).setHours(23, 59, 59);
+  let firstDayToday = new Date(date).setHours(00, 00, 00);
+  let lastDayToday = new Date(date).setHours(23, 59, 59);
+
   var conditionLastYear = date2
     ? { fecha_creacion: { [Op.gt]: fromDate }, estado: "3", local: tienda }
     : null;
+
   var conditionLastMonth = date
     ? {
         fecha_creacion: {
-          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+          [Op.between]: [
+            new Date(firstDayMonth).setMinutes(
+              new Date(date).getTimezoneOffset()
+            ),
+            new Date(lastDayMonth).setMinutes(
+              new Date(lastDayMonth).getMinutes() +
+                new Date(date).getTimezoneOffset()
+            ),
+          ],
         },
         estado: "3",
         local: tienda,
       }
     : null;
+
   var conditionToday = date
     ? {
-        fecha_creacion: { [Op.between]: [firstDayToday, lastDayToday] },
+        fecha_creacion: {
+          [Op.between]: [
+            new Date(firstDayToday).setMinutes(
+              new Date(firstDayToday).getMinutes() +
+                new Date(date).getTimezoneOffset()
+            ),
+            new Date(lastDayToday).setMinutes(
+              new Date(lastDayToday).getMinutes() +
+                new Date(date).getTimezoneOffset()
+            ),
+          ],
+        },
         estado: "3",
         local: tienda,
       }
@@ -387,14 +443,30 @@ const lastInserted = (tienda, resolve, reject) => {
 
 exports.totalOrdersMonth = (req, res) => {
   const tienda = req.body.tienda;
-  let date = new Date(req.body.date);
-  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  let date = new Date(req.body.date).toLocaleString("en-US");
+  let firstDayMonth = new Date(
+    new Date(date).getFullYear(),
+    new Date(date).getMonth(),
+    1
+  );
+  let lastDayMonth = new Date(
+    new Date(date).getFullYear(),
+    new Date(date).getMonth() + 1,
+    0
+  ).setHours(23, 59, 59);
 
   var conditionLastMonth = date
     ? {
         fecha_creacion: {
-          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+          [Op.between]: [
+            new Date(firstDayMonth).setMinutes(
+              new Date(date).getTimezoneOffset()
+            ),
+            new Date(lastDayMonth).setMinutes(
+              new Date(lastDayMonth).getMinutes() +
+                new Date(date).getTimezoneOffset()
+            ),
+          ],
         },
         local: tienda,
       }
@@ -415,14 +487,30 @@ exports.totalOrdersMonth = (req, res) => {
 
 exports.totalOrdersByPaymentMethod = (req, res) => {
   const tienda = req.body.tienda;
-  let date = new Date(req.body.date);
-  let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  let lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  let date = new Date(req.body.date).toLocaleString("en-US");
+  let firstDayMonth = new Date(
+    new Date(date).getFullYear(),
+    new Date(date).getMonth(),
+    1
+  );
+  let lastDayMonth = new Date(
+    new Date(date).getFullYear(),
+    new Date(date).getMonth() + 1,
+    0
+  ).setHours(23, 59, 59);
 
   var conditionLastMonth = date
     ? {
         fecha_creacion: {
-          [Op.between]: [firstDayMonth, lastDayMonth.setHours(23, 59, 59)],
+          [Op.between]: [
+            new Date(firstDayMonth).setMinutes(
+              new Date(date).getTimezoneOffset()
+            ),
+            new Date(lastDayMonth).setMinutes(
+              new Date(lastDayMonth).getMinutes() +
+                new Date(date).getTimezoneOffset()
+            ),
+          ],
         },
         local: tienda,
       }

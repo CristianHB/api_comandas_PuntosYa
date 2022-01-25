@@ -3,11 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     "pedido",
     {
       id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
       codigo: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
       },
       id_puntos: {
         type: DataTypes.STRING,

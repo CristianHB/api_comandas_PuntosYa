@@ -3,11 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     "comanda",
     {
       id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
       codigo: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
       },
       local: {
         type: DataTypes.STRING,
