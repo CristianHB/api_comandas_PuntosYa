@@ -12,8 +12,15 @@ exports.create = async (req, res) => {
     });
     return;
   }
-  let date = new Date(req.body.fecha_creacion);
+  let date = new Date(
+    new Date(req.body.fecha_creacion).setMinutes(
+      new Date(req.body.fecha_creacion).getMinutes() -
+        new Date(req.body.fecha_creacion).getTimezoneOffset()
+    )
+  ).toLocaleString("en-US");
   // date.setHours(date.getHours() - 5);
+  console.log("fecha que llega", req.body.fecha_creacion);
+  console.log("fecha new date", date);
   let ultimo = 1;
   // Create a Order
   const order = {
