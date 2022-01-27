@@ -194,7 +194,7 @@ exports.totalOrdersByTime = (req, res) => {
   let date2 = new Date(req.body.date).toLocaleString("en-US");
   let fromDate = new Date(date2).setMonth(new Date(date2).getMonth() - 12);
   let date = new Date(req.body.date).toLocaleString("en-US");
-  console.log(date);
+  console.log("date que llega --->>>", date);
   let firstDayMonth = new Date(
     new Date(date).getFullYear(),
     new Date(date).getMonth(),
@@ -210,6 +210,7 @@ exports.totalOrdersByTime = (req, res) => {
   let lastDayToday = new Date(date).setHours(23, 59, 59);
 
   console.log(
+    "date que se transforma------>",
     new Date(
       new Date(firstDayToday).setMinutes(
         new Date(firstDayToday).getMinutes() +
