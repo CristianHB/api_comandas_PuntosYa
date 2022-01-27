@@ -200,6 +200,11 @@ exports.totalOrdersByTime = (req, res) => {
     new Date(date).getMonth(),
     1
   );
+  console.log(
+    new Date(
+      new Date(firstDayMonth).setMinutes(new Date(date).getTimezoneOffset())
+    ).toLocaleString("en-US")
+  );
   let lastDayMonth = new Date(
     new Date(date).getFullYear(),
     new Date(date).getMonth() + 1,
