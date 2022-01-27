@@ -194,6 +194,7 @@ exports.totalOrdersByTime = (req, res) => {
   let date2 = new Date(req.body.date).toLocaleString("en-US");
   let fromDate = new Date(date2).setMonth(new Date(date2).getMonth() - 12);
   let date = new Date(req.body.date).toLocaleString("en-US");
+  console.log(date2);
   let firstDayMonth = new Date(
     new Date(date).getFullYear(),
     new Date(date).getMonth(),
