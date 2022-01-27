@@ -194,17 +194,13 @@ exports.totalOrdersByTime = (req, res) => {
   let date2 = new Date(req.body.date).toLocaleString("en-US");
   let fromDate = new Date(date2).setMonth(new Date(date2).getMonth() - 12);
   let date = new Date(req.body.date).toLocaleString("en-US");
-  console.log(date2);
+  console.log(date);
   let firstDayMonth = new Date(
     new Date(date).getFullYear(),
     new Date(date).getMonth(),
     1
   );
-  console.log(
-    new Date(
-      new Date(firstDayMonth).setMinutes(new Date(date).getTimezoneOffset())
-    ).toLocaleString("en-US")
-  );
+
   let lastDayMonth = new Date(
     new Date(date).getFullYear(),
     new Date(date).getMonth() + 1,
@@ -212,6 +208,15 @@ exports.totalOrdersByTime = (req, res) => {
   ).setHours(23, 59, 59);
   let firstDayToday = new Date(date).setHours(00, 00, 00);
   let lastDayToday = new Date(date).setHours(23, 59, 59);
+
+  console.log(
+    new Date(
+      new Date(firstDayToday).setMinutes(
+        new Date(firstDayToday).getMinutes() +
+          new Date(date).getTimezoneOffset()
+      )
+    ).toLocaleString("en-US")
+  );
 
   var conditionLastYear = date2
     ? { fecha_creacion: { [Op.gt]: fromDate }, local: tienda }
