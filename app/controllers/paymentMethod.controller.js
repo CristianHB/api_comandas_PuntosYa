@@ -31,6 +31,65 @@ exports.create = (req, res) => {
       });
     });
 };
+// Create paymentMethod Default
+exports.createDefault = (req, res) => {
+  // Validate request
+  if (!req) {
+    res.status(400).send({
+      message: `Content  not be empty! ${req.body}`,
+    });
+    return;
+  }
+
+  const paymentMethod = [
+    {
+      nombre: "Efectivo",
+      estado: true,
+      descripcion: "",
+      local: req.body.tienda,
+    },
+    {
+      nombre: "Datafonos",
+      estado: true,
+      descripcion: "",
+      local: req.body.tienda,
+    },
+    {
+      nombre: "TrasferenciaElectrónica",
+      estado: true,
+      descripcion: "",
+      local: req.body.tienda,
+    },
+    {
+      nombre: "epayco",
+      estado: true,
+      descripcion: "",
+      local: req.body.tienda,
+    },
+  ];
+
+  let fn = (element) => {
+    return new Promise((resolve, rejected) => {
+      PaymentMethod.create(element)
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => {
+          rejected(data);
+        });
+    });
+  };
+
+  let promises = Promise.all(paymentMethod.map(fn));
+  promises
+    .then((data) => res.send(data))
+    .catch((err) =>
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving PaymentMethods.",
+      })
+    );
+};
 
 // Retrieve all PaymentMethods from the database.
 exports.findAll = (req, res) => {

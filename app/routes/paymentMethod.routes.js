@@ -4,7 +4,10 @@ module.exports = (app) => {
   var router = require("express").Router();
 
   // Create a new Payment Method
-  //   router.post("/create", paymentMethod.create);
+  // router.post("/create", paymentMethod.create);
+
+  //Create Payment method Default
+  router.post("/createDefault", paymentMethod.createDefault);
 
   // Retrieve all Payment Method
   router.post("/read", paymentMethod.findAll);
