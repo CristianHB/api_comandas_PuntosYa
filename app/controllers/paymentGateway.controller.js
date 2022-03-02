@@ -68,25 +68,58 @@ exports.findOne = (req, res) => {
 
 // Update a PaymentGateway by the id in the request
 exports.update = (req, res) => {
-  const id = req.params.id;
+  const id = req.params.id_cliente;
+  var condition = id ? { id_cliente: id } : null;
 
-  PaymentGateway.update(req.body, {
-    where: { id_cliente: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "PaymentGateway was updated successfully.",
-        });
+  const paymentGateway = {
+    nombre: req.body.nombre ? req.body.nombre : "",
+    id_cliente: req.body.id_cliente,
+    p_key: req.body.p_key,
+    public_key: req.body.public_key,
+    local: req.body.local ? req.body.local : "",
+  };
+
+  PaymentGateway.findAll({ where: condition })
+    .then((data) => {
+      if (data.length > 0) {
+        PaymentGateway.update(req.body, {
+          where: { id_cliente: id },
+        })
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: "PaymentGateway was updated successfully.",
+              });
+            } else {
+              res.send({
+                message: `Cannot update PaymentGateway with id=${id}. Maybe PaymentGateway was not found or req.body is empty!`,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "Error updating PaymentGateway with id=" + id,
+            });
+          });
       } else {
-        res.send({
-          message: `Cannot update PaymentGateway with id=${id}. Maybe PaymentGateway was not found or req.body is empty!`,
-        });
+        PaymentGateway.create(paymentGateway)
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while creating the PaymentGateway.",
+            });
+          });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating PaymentGateway with id=" + id,
+        message:
+          err.message ||
+          "Some error occurred while retrieving PaymentGateways.",
       });
     });
 };
