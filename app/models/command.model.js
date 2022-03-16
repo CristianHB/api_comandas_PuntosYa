@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       nombre: {
         type: DataTypes.STRING,
       },
+      a_nombre_de: {
+        type: DataTypes.STRING,
+      },
       mesa: {
         type: DataTypes.STRING,
       },

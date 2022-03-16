@@ -20,6 +20,7 @@ exports.create = (req, res) => {
     id_puntos: req.body.id_puntos,
     cedula: req.body.cedula,
     nombre: req.body.nombre,
+    a_nombre_de: req.body.a_nombre_de,
     mesa: req.body.mesa,
     observaciones: req.body.observaciones,
     estado: req.body.estado,
