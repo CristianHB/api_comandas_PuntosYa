@@ -16,7 +16,7 @@ module.exports = (app) => {
   router.get("/readOne/:codigo", command.findOne);
 
   //Retrieve a list of Commands
-  router.get("/readByStatus/:status", command.findByStatus);
+  router.post("/readByStatus", command.findByStatus);
 
   // Update a Commands with id
   router.post("/update/:id", command.update);

@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       cedula: {
         type: DataTypes.STRING,
       },
+      nombre: {
+        type: DataTypes.STRING,
+      },
       mesa: {
         type: DataTypes.STRING,
       },

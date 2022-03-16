@@ -19,6 +19,7 @@ exports.create = (req, res) => {
     local: req.body.local,
     id_puntos: req.body.id_puntos,
     cedula: req.body.cedula,
+    nombre: req.body.nombre,
     mesa: req.body.mesa,
     observaciones: req.body.observaciones,
     estado: req.body.estado,
@@ -75,7 +76,7 @@ exports.findAll = (req, res) => {
 
 //Retrieves all Commands with status x
 exports.findByStatus = (req, res) => {
-  const status = req.params.status;
+  const status = req.body.estado;
   const tienda = req.body.tienda;
   Command.findAll({ where: { estado: status, local: tienda } })
     .then((data) => {
