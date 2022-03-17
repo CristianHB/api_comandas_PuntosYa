@@ -84,7 +84,7 @@ exports.findAll = (req, res) => {
 exports.findByStatus = (req, res) => {
   const tienda = req.body.tienda;
   const status = req.body.estado;
-  Order.findAll({ where: { estado_pago: status, local: tienda } })
+  Order.findAll({ where: { estado: status, local: tienda } })
     .then((data) => {
       res.send(data);
     })
