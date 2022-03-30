@@ -4,7 +4,7 @@ const Order = db.orders;
 const Op = db.Sequelize.Op;
 const html = require("../utils/html");
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.CORREOKEY);
 
 // Create and Save a new Order
 exports.create = async (req, res) => {
@@ -78,6 +78,20 @@ exports.test = async (req, res) => {
   })
     .then((p) => {
       console.log(p);
+      const msg = {
+        to: "c.hernandez1@utp.edu.co", // Change to your recipient
+        from: "mercadeo@puntosya.com", // Change to your verified sender
+        subject: "Sending with SendGrid is Fun",
+        html: p,
+      };
+      sgMail
+        .send(msg)
+        .then((response) => {
+          console.log("response", response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     })
     .catch((err) => {
       res.status(500).send({
@@ -85,21 +99,6 @@ exports.test = async (req, res) => {
       });
       console.log("error", err);
     });
-
-  // const msg = {
-  //   to: "c.hernandez1@utp.edu.co", // Change to your recipient
-  //   from: "mercadeo@puntosya.com", // Change to your verified sender
-  //   subject: "Sending with SendGrid is Fun",
-  //   html: html.getHtml(req.body),
-  // };
-  // sgMail
-  //   .send(msg)
-  //   .then((response) => {
-  //     console.log("response", response);
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
 };
 
 // Retrieve all Orders from the database.

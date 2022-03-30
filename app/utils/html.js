@@ -1,5 +1,23 @@
-function getHtml(order, resolve, reject) {
-  let y = `
+function getHtml(order, resolver, reject) {
+  let y = "";
+  new Promise((resolve, reject) => {
+    let x = JSON.parse(order.cod_articulos).reduce(
+      (previousValue, currentValue) =>
+        previousValue +
+        `<tr>
+      <td>
+          <div>${currentValue.Nombre_del_Producto}</div>
+          <div>${currentValue.quantity} Unidades X ${
+          currentValue.Precio_d_venta
+        }</div>
+      </td>
+      <td>$ ${currentValue.quantity * currentValue.Precio_d_venta}</td>
+      </tr>`,
+      ""
+    );
+    resolve(x);
+  }).then((p) => {
+    y = `
       <!DOCTYPE html>
       <html lang="en">
           <head>
@@ -32,32 +50,13 @@ function getHtml(order, resolve, reject) {
                       <div>Dirección, Barrio: ${order.direccion}</div>
                       <div>Ciudad: ${order.ciudad}</div>
                       <div>Teléfono/Celular: ${order.telefono}</div>
-                      <div>Con cuanto pago (efectivo): ${
-                        order.devuelta_de
-                      }</div>
+                      <div>Con cuanto pago (efectivo): ${order.devuelta_de}</div>
                       <br />
                       <div>
                           <div>
                               <table style="width: 60%">
                               <tbody>
-                                  ${parseJson(order.cod_articulos).forEach(
-                                    (element) => {
-                                      `<tr>
-                                      <td>
-                                          <div>${
-                                            element.Nombre_del_Producto
-                                          }</div>
-                                          <div>${element.quantity} Unidades X ${
-                                        element.Precio_d_venta
-                                      }</div>
-                                      </td>
-                                      <td>$ ${
-                                        element.quantity *
-                                        element.Precio_d_venta
-                                      }</td>
-                                      </tr>`;
-                                    }
-                                  )}
+                                  ${p}
                                   <tr>
                                   <td><h2 class="title">total</h2></td>
                                   <td><b>$ ${order.monto}</b></td>
@@ -71,14 +70,8 @@ function getHtml(order, resolve, reject) {
           </body>
       </html>
       `;
-
-  resolve(y);
-}
-
-function parseJson(str) {
-  let x = JSON.parse(str);
-  //   console.log(x);
-  return x;
+    resolver(y);
+  });
 }
 
 module.exports = { getHtml };
