@@ -2,6 +2,9 @@ const db = require("../models");
 const Sequelize = require("sequelize");
 const Order = db.orders;
 const Op = db.Sequelize.Op;
+const html = require("../utils/html");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Create and Save a new Order
 exports.create = async (req, res) => {
@@ -15,6 +18,9 @@ exports.create = async (req, res) => {
   let date = new Date(req.body.fecha_creacion);
   // date.setHours(date.getHours() - 5);
 
+  // req.body.direccionUser
+  // req.body.correoUser,
+
   let ultimo = 1;
   // Create a Order
   const order = {
@@ -22,12 +28,14 @@ exports.create = async (req, res) => {
     local: req.body.local,
     mensajero: req.body.mensajero,
     cedula: req.body.cedula,
+    nombre: req.body.nombreUser,
     forma_pago: req.body.forma_pago,
     estado_pago: req.body.estado_pago,
     observaciones: req.body.observaciones,
     imagen_recibo: req.body.imagen_recibo,
     Id_Pedido_Enc: req.body.Id_Pedido_Enc,
     cod_articulos: req.body.cod_articulos,
+    devuelta_de: req.body.devuelta_de,
     monto: req.body.monto,
     direccion: req.body.direccion,
     telefono: req.body.telefono,
@@ -62,6 +70,36 @@ exports.create = async (req, res) => {
       });
       console.log("error", err);
     });
+};
+
+exports.test = async (req, res) => {
+  new Promise((resolve, reject) => {
+    html.getHtml(req.body, resolve, reject);
+  })
+    .then((p) => {
+      console.log(p);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err || "Some error occurred while creating the Order.",
+      });
+      console.log("error", err);
+    });
+
+  // const msg = {
+  //   to: "c.hernandez1@utp.edu.co", // Change to your recipient
+  //   from: "mercadeo@puntosya.com", // Change to your verified sender
+  //   subject: "Sending with SendGrid is Fun",
+  //   html: html.getHtml(req.body),
+  // };
+  // sgMail
+  //   .send(msg)
+  //   .then((response) => {
+  //     console.log("response", response);
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
 };
 
 // Retrieve all Orders from the database.

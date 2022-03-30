@@ -9,6 +9,9 @@ module.exports = (app) => {
   // Retrieve all Orders
   router.post("/read", order.findAll);
 
+  // Retrieve all Orders
+  router.post("/test", order.test);
+
   // Retrieve all published Orders
   // router.get("/actived", Order.findAllActived);
 

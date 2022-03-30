@@ -40,6 +40,9 @@ module.exports = (sequelize, DataTypes) => {
       monto: {
         type: DataTypes.STRING,
       },
+      devuelta_de: {
+        type: DataTypes.STRING,
+      },
       direccion: {
         type: DataTypes.STRING,
       },
