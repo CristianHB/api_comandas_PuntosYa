@@ -16,7 +16,7 @@ module.exports = (app) => {
   //   router.get("/readOne/:id", Tip.findOne);
 
   // Update a Tip with id
-  router.post("/update/:id", Tip.update);
+  router.post("/update/:tienda", Tip.update);
 
   // Delete a Tip with id
   //   router.post("/delete", Tip.delete);

@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a Color
   const color = {
-    id: req.body.id,
     valor: req.body.valor,
     local: req.body.local,
   };

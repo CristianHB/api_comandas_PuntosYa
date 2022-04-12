@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a Tip
   const tip = {
-    id: req.body.id,
     valor: req.body.valor,
     local: req.body.local,
   };
@@ -64,25 +63,55 @@ exports.findOne = (req, res) => {
 
 // Update a Tip by the id in the request
 exports.update = (req, res) => {
-  const id = req.params.id;
+  const tienda = req.params.tienda;
 
-  Tip.update(req.body, {
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "Tip was updated successfully.",
-        });
+  Tip.findAll({ where: { local: tienda } })
+    .then((data) => {
+      if (data.length > 0) {
+        Tip.update(req.body, {
+          where: { local: tienda },
+        })
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: "Tip was updated successfully.",
+              });
+            } else {
+              res.send({
+                message: `Cannot update Tip with local=${tienda}. Maybe Tip was not found or req.body is empty!`,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "Error updating Tip with local=" + tienda,
+            });
+          });
       } else {
-        res.send({
-          message: `Cannot update Tip with id=${id}. Maybe Tip was not found or req.body is empty!`,
-        });
+        // Create a Tip
+        const tip = {
+          valor: req.body.valor,
+          local: tienda,
+        };
+
+        // Save Tip in the database
+        Tip.create(tip)
+          .then((data) => {
+            res.send({
+              message: "Tip was updated successfully.",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while creating the Tip.",
+            });
+          });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Tip with id=" + id,
+        message: err.message || "Some error occurred while retrieving Tips.",
       });
     });
 };

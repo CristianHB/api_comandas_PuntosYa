@@ -3,8 +3,9 @@ module.exports = (sequelize, DataTypes) => {
     "propina",
     {
       id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
       valor: {
         type: DataTypes.STRING,
