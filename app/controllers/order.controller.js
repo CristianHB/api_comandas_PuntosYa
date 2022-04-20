@@ -5,6 +5,7 @@ const Op = db.Sequelize.Op;
 const html = require("../utils/html");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.CORREOKEY);
+const twilio = require("twilio");
 
 // Create and Save a new Order
 exports.create = async (req, res) => {
@@ -52,9 +53,10 @@ exports.create = async (req, res) => {
         ultimo += parseInt(p[0].max);
       }
       order.codigo = ultimo;
-      // Save Order in the database
+      // Save Order in the databas
       Order.create(order)
         .then((data) => {
+          this.test(req, res);
           res.send(data);
         })
         .catch((err) => {
@@ -77,9 +79,9 @@ exports.test = async (req, res) => {
     html.getHtml(req.body, resolve, reject);
   })
     .then((p) => {
-      console.log(p);
+      console.log("correo user--", req.body.correoUser);
       const msg = {
-        to: "c.hernandez1@utp.edu.co", // Change to your recipient
+        to: `${req.body.correoUser}`, // Change to your recipient
         from: "mercadeo@puntosya.com", // Change to your verified sender
         subject: "Sending with SendGrid is Fun",
         html: p,
@@ -87,10 +89,10 @@ exports.test = async (req, res) => {
       sgMail
         .send(msg)
         .then((response) => {
-          console.log("response", response);
+          console.log("response---", response);
         })
         .catch((error) => {
-          console.error(error);
+          console.error("error---", error);
         });
     })
     .catch((err) => {
@@ -99,6 +101,18 @@ exports.test = async (req, res) => {
       });
       console.log("error", err);
     });
+};
+
+exports.testmsm = async (req, res) => {
+  const client = new twilio(process.env.ACCOUNTSMS, process.env.TOKENSMS);
+  client.messages
+    .create({
+      to: "+573186178799",
+      body: "hola, esto es desde twilio",
+      from: "+19564520925",
+    })
+    .then((message) => console.log(message.sid))
+    .done();
 };
 
 // Retrieve all Orders from the database.

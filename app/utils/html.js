@@ -16,7 +16,7 @@ function getHtml(order, resolver, reject) {
       ""
     );
     resolve(x);
-  }).then((p) => {
+  }).then((products) => {
     y = `
       <!DOCTYPE html>
       <html lang="en">
@@ -33,30 +33,30 @@ function getHtml(order, resolver, reject) {
           </head>
           <body>
               <div>
-                  <h1 class="title">Empresa</h1>
+                  <h1 style="margin-bottom: 0;" class="title">Empresa</h1>
                   <div>${order.nombreEmpresa}</div>
                   <div>${order.direccionEmpresa}</div>
                   <div>${order.telefonoEmpresa}</div>
               
-                  <h1 class="title">Usuario</h1>
-                  <div>${order.nombreUsuario}</div>
-                  <div>${order.direccionUsuario}</div>
-                  <div>${order.correoUsuario}</div>
+                  <h1 style="margin-bottom: 0;" class="title">Usuario</h1>
+                  <div>${order.nombreUser}</div>
+                  <div>${order.direccionUser}</div>
+                  <div>${order.correoUser}</div>
                   <div>
-                      <h1 class="title">Datos del pedido</h1>
-                      <div>Medio de pago:</div>
-                      <div>Observaciones:</div>
+                      <h1 style="margin-bottom: 0;" class="title">Datos del pedido</h1>
+                      <div><b>Medio de pago:</b> ${order.observaciones}</div>
+                      <div><b>Observaciones:</b> ${order.observaciones}</div>
                       <br />
-                      <div>Dirección, Barrio: ${order.direccion}</div>
-                      <div>Ciudad: ${order.ciudad}</div>
-                      <div>Teléfono/Celular: ${order.telefono}</div>
-                      <div>Con cuanto pago (efectivo): ${order.devuelta_de}</div>
+                      <div><b>Dirección, Barrio:</b> ${order.direccion}</div>
+                      <div><b>Ciudad:</b> ${order.ciudad}</div>
+                      <div><b>Teléfono/Celular:</b> ${order.telefono}</div>
+                      <div><b>Con cuanto pago (efectivo):</b> ${order.devuelta_de}</div>
                       <br />
                       <div>
                           <div>
                               <table style="width: 60%">
                               <tbody>
-                                  ${p}
+                                  ${products}
                                   <tr>
                                   <td><h2 class="title">total</h2></td>
                                   <td><b>$ ${order.monto}</b></td>
