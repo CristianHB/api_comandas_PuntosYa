@@ -1,7 +1,10 @@
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const twilio = require("twilio");
 
 exports.sendMessage = async (req, res) => {
+  console.log(process.env.ACCOUNTSMS);
   const client = new twilio(process.env.ACCOUNTSMS, process.env.TOKENSMS);
   client.messages
     .create({
