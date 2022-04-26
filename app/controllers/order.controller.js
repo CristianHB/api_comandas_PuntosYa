@@ -4,6 +4,7 @@ const Order = db.orders;
 const Op = db.Sequelize.Op;
 const html = require("../utils/html");
 const sgMail = require("@sendgrid/mail");
+require("dotenv").config();
 sgMail.setApiKey(process.env.CORREOKEY);
 const twilio = require("twilio");
 

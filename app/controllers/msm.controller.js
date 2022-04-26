@@ -1,4 +1,5 @@
 const twilio = require("twilio");
+require("dotenv").config();
 
 exports.sendMessage = async (req, res) => {
   const client = new twilio(process.env.ACCOUNTSMS, process.env.TOKENSMS);
