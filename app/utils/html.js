@@ -40,7 +40,7 @@ function getHtml(order, resolver, reject) {
               
                   <h1 style="margin-bottom: 0;" class="title">Usuario</h1>
                   <div>${order.nombreUser}</div>
-                  <div>${order.direccionUser}</div>
+                  <div>${order.direccionUser ? order.direccionUser : ""}</div>
                   <div>${order.correoUser}</div>
                   <div>
                       <h1 style="margin-bottom: 0;" class="title">Datos del pedido</h1>
@@ -50,7 +50,9 @@ function getHtml(order, resolver, reject) {
                       <div><b>Dirección, Barrio:</b> ${order.direccion}</div>
                       <div><b>Ciudad:</b> ${order.ciudad}</div>
                       <div><b>Teléfono/Celular:</b> ${order.telefono}</div>
-                      <div><b>Con cuanto pago (efectivo):</b> ${order.devuelta_de}</div>
+                      <div><b>Con cuanto pago (efectivo):</b> ${
+                        order.devuelta_de
+                      }</div>
                       <br />
                       <div>
                           <div>

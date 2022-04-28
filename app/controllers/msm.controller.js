@@ -6,8 +6,8 @@ exports.sendMessage = async (req, res) => {
   const client = new twilio(dbConfig.ACCOUNTSMS, dbConfig.TOKENSMS);
   client.messages
     .create({
-      to: "+573186178799",
-      // to: `+57${req.body.telefono}`,
+      // to: "+573186178799",
+      to: `+57${req.body.telefono}`,
       body: `Compra en ${req.body.nombreCompany}, por valor de ${req.body.monto}. 
             Puntos Pendientes: ${req.body.puntosPendientes}
             Puntos Disponibles: ${req.body.puntosSinCobrar}`,

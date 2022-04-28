@@ -80,7 +80,6 @@ exports.test = async (req, res) => {
     html.getHtml(req.body, resolve, reject);
   })
     .then((p) => {
-      console.log("correo user--", req.body.correoUser);
       const msg = {
         to: `${req.body.correoUser}`, // Change to your recipient
         from: "mercadeo@puntosya.com", // Change to your verified sender
