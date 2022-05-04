@@ -11,8 +11,12 @@ exports.sendMessage = async (req, res) => {
       body: `
 Compra en ${req.body.nombreCompany}, por valor de ${req.body.monto}. 
       
-Puntos Pendientes: ${req.body.puntosPendientes ? req.body.puntosPendientes : 0}
-Puntos Disponibles: ${req.body.puntosSinCobrar ? req.body.puntosSinCobrar : 0}
+Puntos Pendientes: ${
+        req.body.puntosPendientes ? req.body.puntosPendientes.toFixed(2) : 0
+      }
+Puntos Disponibles: ${
+        req.body.puntosSinCobrar ? req.body.puntosSinCobrar.toFixed(2) : 0
+      }
       `,
       from: "+19564520925",
     })
