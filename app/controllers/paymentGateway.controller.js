@@ -68,8 +68,8 @@ exports.findOne = (req, res) => {
 
 // Update a PaymentGateway by the id in the request
 exports.update = (req, res) => {
-  const id = req.body.id;
-  var condition = id ? { id: id } : null;
+  const tienda = req.body.local;
+  var condition = tienda ? { local: tienda } : null;
 
   const paymentGateway = {
     nombre: req.body.nombre ? req.body.nombre : "",
@@ -79,39 +79,51 @@ exports.update = (req, res) => {
     local: req.body.local,
   };
 
-  if (condition) {
-    PaymentGateway.update(req.body, {
-      where: { id: id },
+  PaymentGateway.findAll({ where: condition })
+    .then((data) => {
+      if (data.length > 0) {
+        PaymentGateway.update(req.body, {
+          where: { local: tienda },
+        })
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: "PaymentGateway was updated successfully.",
+              });
+            } else {
+              res.send({
+                message: `Cannot update PaymentGateway with id=${id}. Maybe PaymentGateway was not found or req.body is empty!`,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "Error updating PaymentGateway with id=" + id,
+            });
+          });
+      } else {
+        PaymentGateway.create(paymentGateway)
+          .then((data) => {
+            res.send({
+              message: "PaymentGateway was created successfully.",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while creating the PaymentGateway.",
+            });
+          });
+      }
     })
-      .then((num) => {
-        if (num == 1) {
-          res.send({
-            message: "PaymentGateway was updated successfully.",
-          });
-        } else {
-          res.send({
-            message: `Cannot update PaymentGateway with id=${id}. Maybe PaymentGateway was not found or req.body is empty!`,
-          });
-        }
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: "Error updating PaymentGateway with id=" + id,
-        });
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving PaymentGateways.",
       });
-  } else {
-    PaymentGateway.create(paymentGateway)
-      .then((data) => {
-        res.send(data);
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message ||
-            "Some error occurred while creating the PaymentGateway.",
-        });
-      });
-  }
+    });
 };
 
 // Delete a PaymentGateway with the specified id in the request
