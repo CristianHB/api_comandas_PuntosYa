@@ -82,13 +82,17 @@ exports.test = async (req, res) => {
     .then((p) => {
       const msg = {
         to: `${req.body.correoUser}`, // Change to your recipient
-        from: "mercadeo@puntosya.com", // Change to your verified sender
-        subject: "Sending with SendGrid is Fun",
+        from: {
+          email: "mercadeo@puntosya.com", // Change to your verified sender
+          name: "Mind Club",
+        },
+        subject: "Nuevo pedido",
         html: p,
       };
       sgMail
         .send(msg)
         .then((response) => {
+          res.send({ message: "Correo enviado" });
           console.log("response---", response);
         })
         .catch((error) => {
