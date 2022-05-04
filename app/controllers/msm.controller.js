@@ -6,6 +6,7 @@ exports.sendMessage = async (req, res) => {
   const client = new twilio(dbConfig.ACCOUNTSMS, dbConfig.TOKENSMS);
   client.messages
     .create({
+      //numero de prueba
       // to: "+573186178799",
       to: `+57${req.body.telefono}`,
       body: `
