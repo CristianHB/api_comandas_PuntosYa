@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       colorSecundario: {
         type: DataTypes.STRING,
       },
+      logo: {
+        type: DataTypes.STRING,
+      },
+      imagen_fondo: {
+        type: DataTypes.STRING,
+      },
       local: {
         type: DataTypes.STRING,
       },

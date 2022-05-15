@@ -2,7 +2,7 @@ const db = require("../models");
 const Color = db.color;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Color
+// Create and Save a new Color (no se usa)
 exports.create = (req, res) => {
   // Validate request
   if (!req) {
@@ -91,6 +91,8 @@ exports.update = (req, res) => {
       const color = {
         colorPrimario: req.body.colorPrimario,
         colorSecundario: req.body.colorSecundario,
+        logo: req.body.logo,
+        imagen_fondo: req.body.imagen_fondo,
         local: req.params.tienda,
       };
 
