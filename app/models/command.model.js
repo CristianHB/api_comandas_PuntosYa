@@ -34,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
       estado: {
         type: DataTypes.STRING,
       },
+      forma_pago: {
+        type: DataTypes.STRING,
+      },
       cod_articulos: {
         type: DataTypes.STRING,
       },
