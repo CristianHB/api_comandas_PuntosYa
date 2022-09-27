@@ -20,5 +20,6 @@ db.paymentGateways = require("./paymentGateway.model.js")(sequelize, Sequelize);
 db.paymentMethods = require("./paymentMethod.model.js")(sequelize, Sequelize);
 db.tip = require("./tip.model.js")(sequelize, Sequelize);
 db.gmt = require("./gmt.model.js")(sequelize, Sequelize);
+db.billing = require("./billing.model.js")(sequelize, Sequelize);
 
 module.exports = db;

@@ -1,5 +1,5 @@
 function getHtml(order, resolver, reject) {
-  let y = "";
+  let plantilla = "";
   new Promise((resolve, reject) => {
     let x = JSON.parse(order.cod_articulos).reduce(
       (previousValue, currentValue) =>
@@ -17,7 +17,7 @@ function getHtml(order, resolver, reject) {
     );
     resolve(x);
   }).then((products) => {
-    y = `
+    plantilla = `
       <!DOCTYPE html>
       <html lang="en">
           <head>
@@ -72,7 +72,7 @@ function getHtml(order, resolver, reject) {
           </body>
       </html>
       `;
-    resolver(y);
+    resolver(plantilla);
   });
 }
 
