@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       id_factura: {
         type: DataTypes.STRING,
       },
+      resolucion_dian: {
+        type: DataTypes.STRING,
+      },
+      fecha_autorizada: {
+        type: DataTypes.DATE,
+      },
       local: {
         type: DataTypes.STRING,
       },

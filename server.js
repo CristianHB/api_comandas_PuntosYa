@@ -40,6 +40,6 @@ require("./app/routes/billing.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8002;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-  // console.log(`Server ready on http://localhost:${PORT}.`);
+  // console.log(`Server is running on port ${PORT}.`);
+  console.log(`Server ready on http://localhost:${PORT}.`);
 });
