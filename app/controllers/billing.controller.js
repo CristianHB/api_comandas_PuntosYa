@@ -81,34 +81,56 @@ exports.update = (req, res) => {
   Billing.findAll({ where: { local: tienda } })
     .then((data) => {
       if (data.length > 0) {
-        new Promise((resolve, reject) => {
-          lastInserted(req.body.local, resolve, reject);
-        }).then((p) => {
-          if (p[0].max) {
-            ultimo += parseInt(p[0].max);
-          }
-          req.body.consecutivo = ultimo;
-        });
-
-        Billing.update(req.body, {
-          where: { local: tienda },
-        })
-          .then((num) => {
-            if (num == 1) {
-              res.send({
-                message: "Billing was updated successfully.",
-              });
-            } else {
-              res.send({
-                message: `Cannot update Billing with local=${tienda}. Maybe Billing was not found or req.body is empty!`,
-              });
-            }
+        if (req.body.consecutivo) {
+          Billing.update(req.body, {
+            where: { local: tienda },
           })
-          .catch((err) => {
-            res.status(500).send({
-              message: "Error updating Billing with local=" + tienda,
+            .then((num) => {
+              if (num == 1) {
+                res.send({
+                  message: "Billing was updated successfully.",
+                });
+              } else {
+                res.send({
+                  message: `Cannot update Billing with local=${tienda}. Maybe Billing was not found or req.body is empty!`,
+                });
+              }
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message: "Error updating Billing with local=" + tienda,
+              });
             });
+        } else {
+          new Promise((resolve, reject) => {
+            lastInserted(req.body.local, resolve, reject);
+          }).then((p) => {
+            if (p[0].max) {
+              ultimo += parseInt(p[0].max);
+            }
+            req.body.consecutivo = ultimo;
+
+            Billing.update(req.body, {
+              where: { local: tienda },
+            })
+              .then((num) => {
+                if (num == 1) {
+                  res.send({
+                    message: "Billing was updated successfully.",
+                  });
+                } else {
+                  res.send({
+                    message: `Cannot update Billing with local=${tienda}. Maybe Billing was not found or req.body is empty!`,
+                  });
+                }
+              })
+              .catch((err) => {
+                res.status(500).send({
+                  message: "Error updating Billing with local=" + tienda,
+                });
+              });
           });
+        }
       } else {
         // Create a Billing
         const billing = {
