@@ -76,10 +76,20 @@ exports.findOne = (req, res) => {
 // Update a Billing by the id in the request
 exports.update = (req, res) => {
   const tienda = req.params.tienda;
+  let ultimo = 1;
 
   Billing.findAll({ where: { local: tienda } })
     .then((data) => {
       if (data.length > 0) {
+        new Promise((resolve, reject) => {
+          lastInserted(req.body.local, resolve, reject);
+        }).then((p) => {
+          if (p[0].max) {
+            ultimo += parseInt(p[0].max);
+          }
+          req.body.consecutivo = ultimo;
+        });
+
         Billing.update(req.body, {
           where: { local: tienda },
         })
@@ -102,7 +112,7 @@ exports.update = (req, res) => {
       } else {
         // Create a Billing
         const billing = {
-          consecutivo: req.body.consecutivo,
+          consecutivo: 1,
           id_factura: req.body.id_factura,
           local: req.body.local,
         };
