@@ -10,6 +10,9 @@ module.exports = {
   dialect: "mssql",
   dialectOptions: {
     useUTC: false, //for reading from database
+    options: {
+      validateBulkLoadParameters: true, // or true, depending on your needs
+    },
   },
   timezone: "+05:30",
 };
