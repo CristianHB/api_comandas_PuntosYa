@@ -8,6 +8,7 @@ module.exports = {
   ACCOUNTSMS: process.env.ACCOUNTSMS,
   TOKENSMS: process.env.TOKENSMS,
   dialect: "mysql",
+  dialectModule: require("mysql2"),
   // dialectOptions: {
   //   useUTC: false, //for reading from database
   //   options: {
