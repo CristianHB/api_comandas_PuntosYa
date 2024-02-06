@@ -12,8 +12,6 @@ exports.create = (req, res) => {
     });
     return;
   }
-  let date = new Date(req.body.fecha_creacion);
-  // date.setHours(date.getHours() - 5);
   let ultimo = 1;
   const command = {
     local: req.body.local,
@@ -27,7 +25,7 @@ exports.create = (req, res) => {
     forma_pago: req.body.forma_pago,
     cod_articulos: req.body.cod_articulos,
     monto: req.body.monto,
-    fecha_creacion: date,
+    fecha_creacion: req.body.fecha_creacion,
     Id_Pedido_Enc: req.body.Id_Pedido_Enc,
   };
 

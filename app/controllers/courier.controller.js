@@ -11,8 +11,6 @@ exports.create = (req, res) => {
     });
     return;
   }
-  let date = new Date(req.body.fecha_creacion);
-  // date.setHours(date.getHours() - 5);
 
   const courier = {
     cedula: req.body.cedula,
@@ -23,7 +21,7 @@ exports.create = (req, res) => {
     telefono: req.body.telefono,
     estado: req.body.estado,
     id_tienda: req.body.id_tienda,
-    fecha_creacion: date,
+    fecha_creacion: req.body.fecha_creacion,
   };
 
   Courier.create(courier)

@@ -17,11 +17,6 @@ exports.create = async (req, res) => {
     });
     return;
   }
-  let date = new Date(req.body.fecha_creacion);
-  // date.setHours(date.getHours() - 5);
-
-  // req.body.direccionUser
-  // req.body.correoUser,
 
   let ultimo = 1;
   // Create a Order
@@ -43,7 +38,7 @@ exports.create = async (req, res) => {
     telefono: req.body.telefono,
     ciudad: req.body.ciudad,
     estado: req.body.estado,
-    fecha_creacion: date,
+    fecha_creacion: req.body.fecha_creacion,
   };
 
   new Promise((resolve, reject) => {
